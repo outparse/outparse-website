@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Outparse | Grammar Checker & Writing Assistant</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root {
@@ -21,6 +21,8 @@
 --delete-red-hover: #ff0000;
 --link-blue: #2563eb;
 --faq-bg: #f9fafb;
+--error-highlight: #ffebee;
+--error-text: #d32f2f;
 }
 
 * {
@@ -30,7 +32,7 @@ box-sizing: border-box;
 }
 
 body {
-font-family: 'Roboto', sans-serif;
+font-family: 'Arimo', sans-serif;
 color: var(--text-dark);
 line-height: 1.6;
 }
@@ -75,6 +77,7 @@ transform: scale(1.1);
 font-size: 1.5rem;
 font-weight: 700;
 color: var(--text-dark);
+text-transform: lowercase;
 }
 
 /* Desktop Navigation */
@@ -164,7 +167,7 @@ border-radius: 50px;
 font-weight: 600;
 cursor: pointer;
 transition: all 0.3s ease;
-font-family: 'Roboto', sans-serif;
+font-family: 'Arimo', sans-serif;
 font-size: 0.95rem;
 border: none;
 }
@@ -249,6 +252,10 @@ margin-top: 10px;
 font-weight: 400;
 font-size: 0.95rem;
 padding: 6px 0;
+}
+
+.mobile-cta {
+display: none;
 }
 
 /* Hero Section */
@@ -393,13 +400,17 @@ width: 100%;
 height: 100%;
 padding: 20px;
 border: none;
-font-family: 'Roboto', sans-serif;
+font-family: 'Arimo', sans-serif;
 font-size: 1rem;
 line-height: 1.6;
 outline: none;
 background-color: var(--white);
 resize: none;
 overflow-y: auto;
+}
+
+.editor-textarea.error-highlight {
+background-color: var(--error-highlight);
 }
 
 .editor-bottom-bar {
@@ -448,7 +459,7 @@ border-radius: 50px;
 font-weight: 600;
 cursor: pointer;
 transition: all 0.3s ease;
-font-family: 'Roboto', sans-serif;
+font-family: 'Arimo', sans-serif;
 font-size: 0.95rem;
 border: 1px solid var(--border-color);
 background-color: var(--white);
@@ -463,6 +474,91 @@ transform: translateY(-2px);
 .center-action-btn svg {
 width: 20px;
 height: 20px;
+}
+
+/* Error Review Box */
+.error-review-box {
+position: absolute;
+top: 60px;
+right: 20px;
+width: 300px;
+background-color: var(--white);
+border-radius: 12px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+padding: 20px;
+z-index: 10;
+border: 1px solid var(--border-color);
+display: none;
+}
+
+.error-review-box.active {
+display: block;
+}
+
+.error-review-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 15px;
+padding-bottom: 10px;
+border-bottom: 1px solid var(--border-color);
+}
+
+.error-review-header h3 {
+font-size: 1.1rem;
+font-weight: 600;
+color: var(--text-dark);
+}
+
+.error-review-close {
+background: none;
+border: none;
+color: var(--text-light);
+cursor: pointer;
+font-size: 1rem;
+}
+
+.error-review-content {
+margin-bottom: 15px;
+}
+
+.error-review-content p {
+color: var(--text-light);
+font-size: 0.95rem;
+line-height: 1.5;
+margin-bottom: 10px;
+}
+
+.error-review-actions {
+display: flex;
+gap: 10px;
+}
+
+.error-review-btn {
+padding: 8px 16px;
+border-radius: 50px;
+font-weight: 600;
+cursor: pointer;
+font-family: 'Arimo', sans-serif;
+font-size: 0.9rem;
+border: 1px solid var(--border-color);
+background-color: var(--white);
+color: var(--text-dark);
+transition: all 0.3s;
+}
+
+.error-review-btn.accept {
+background-color: var(--primary-color);
+color: white;
+border: none;
+}
+
+.error-review-btn.accept:hover {
+background-color: #248f6c;
+}
+
+.error-review-btn.ignore:hover {
+background-color: #f9f9f9;
 }
 
 /* FAQ Section */
@@ -485,23 +581,28 @@ color: var(--text-dark);
 }
 
 .faq-item {
-background-color: var(--white);
-border-radius: 12px;
-margin-bottom: 15px;
+background-color: transparent;
+border-radius: 0;
+margin-bottom: 20px;
 overflow: hidden;
-box-shadow: 0 2px 8px var(--shadow);
+border-bottom: 1px solid var(--border-color);
+padding-bottom: 15px;
+}
+
+.faq-item:last-child {
+border-bottom: none;
 }
 
 .faq-question {
-padding: 20px;
+padding: 15px 0;
 display: flex;
 align-items: center;
 cursor: pointer;
-transition: background-color 0.3s;
+transition: color 0.3s;
 }
 
 .faq-question:hover {
-background-color: #f9f9f9;
+color: var(--primary-color);
 }
 
 .faq-icon {
@@ -512,6 +613,7 @@ color: var(--text-dark);
 
 .faq-question.active .faq-icon {
 transform: rotate(90deg);
+color: var(--primary-color);
 }
 
 .faq-question h3 {
@@ -522,14 +624,14 @@ flex: 1;
 }
 
 .faq-answer {
-padding: 0 20px;
+padding: 0;
 max-height: 0;
 overflow: hidden;
 transition: max-height 0.3s ease, padding 0.3s ease;
 }
 
 .faq-answer.active {
-padding: 20px;
+padding: 15px 0 0 0;
 max-height: 500px;
 }
 
@@ -593,7 +695,7 @@ gap: 15px;
 padding: 12px 15px;
 border: 1px solid var(--border-color);
 border-radius: 50px;
-font-family: 'Roboto', sans-serif;
+font-family: 'Arimo', sans-serif;
 font-size: 0.95rem;
 outline: none;
 }
@@ -741,6 +843,17 @@ transform: rotate(180deg);
 flex-direction: column;
 text-align: center;
 }
+
+.mobile-cta {
+display: flex;
+flex-direction: column;
+gap: 10px;
+margin-top: 20px;
+}
+
+.mobile-cta .btn {
+width: 100%;
+}
 }
 
 @media (max-width: 576px) {
@@ -753,13 +866,7 @@ grid-template-columns: 1fr;
 }
 
 .cta-buttons {
-flex-direction: column;
-width: 100%;
-}
-
-.btn {
-width: 100%;
-text-align: center;
+display: none;
 }
 
 .editor-card {
@@ -778,7 +885,7 @@ height: 500px;
 <path d="M5 3L6 5L8 6L6 7L5 9L4 7L2 6L4 5L5 3Z"></path>
 <path d="M19 15L20 17L22 18L20 19L19 21L18 19L16 18L18 17L19 15Z"></path>
 </svg>
-<span class="logo-text">Outparse</span>
+<span class="logo-text">outparse</span>
 </div>
 
 <!-- Desktop Navigation -->
@@ -840,7 +947,7 @@ Features <i class="fas fa-chevron-down"></i>
 <li><a href="#">Blog</a></li>
 <li><a href="#">Pricing</a></li>
 </ul>
-<div class="cta-buttons">
+<div class="mobile-cta">
 <button class="btn btn-login">Log in</button>
 <button class="btn btn-primary">Create account</button>
 </div>
@@ -894,6 +1001,20 @@ Upload document
 <button class="btn btn-primary" id="fixGrammarBtn">Fix Grammar</button>
 </div>
 </div>
+<!-- Error Review Box -->
+<div class="error-review-box" id="errorReviewBox">
+<div class="error-review-header">
+<h3>Grammar Suggestion</h3>
+<button class="error-review-close" id="closeErrorReview">×</button>
+</div>
+<div class="error-review-content">
+<p id="errorReviewText">The verb "is" should be changed to "are" to agree with the plural subject "countries".</p>
+</div>
+<div class="error-review-actions">
+<button class="error-review-btn accept" id="acceptSuggestion">Accept</button>
+<button class="error-review-btn ignore" id="ignoreSuggestion">Ignore</button>
+</div>
+</div>
 </div>
 </section>
 
@@ -943,7 +1064,7 @@ Upload document
 <h3>How does the AI-powered grammar check work?</h3>
 </div>
 <div class="faq-answer" id="faq-answer-5">
-<p>Our system uses Gemini AI technology combined with natural language processing to analyze sentence structure, grammar rules, punctuation, spelling, and style recommendations. It compares your text against grammatical patterns and suggests corrections.</p>
+<p>Our system uses AI technology combined with natural language processing to analyze sentence structure, grammar rules, punctuation, spelling, and style recommendations. It compares your text against grammatical patterns and suggests corrections.</p>
 </div>
 </div>
 </div>
@@ -1068,6 +1189,11 @@ const centerActions = document.getElementById('centerActions');
 const trySampleBtn = document.getElementById('trySampleBtn');
 const uploadDocBtn = document.getElementById('uploadDocBtn');
 const fixGrammarBtn = document.getElementById('fixGrammarBtn');
+const errorReviewBox = document.getElementById('errorReviewBox');
+const closeErrorReview = document.getElementById('closeErrorReview');
+const acceptSuggestion = document.getElementById('acceptSuggestion');
+const ignoreSuggestion = document.getElementById('ignoreSuggestion');
+const errorReviewText = document.getElementById('errorReviewText');
 
 // Character count for textarea
 function updateCharCount() {
@@ -1113,11 +1239,15 @@ return;
 this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
 this.disabled = true;
 
-// Use Gemini AI API (will be configured in Netlify environment variables)
+// Use Gemini AI API - will use GEMINI_API_KEY from Netlify environment variables
 checkGrammarWithAI(text).then(result => {
 this.innerHTML = 'Fix Grammar';
 this.disabled = false;
-if (result && result.corrected) {
+if (result && result.errors && result.errors.length > 0) {
+// Highlight errors and show first suggestion
+highlightErrors(result.errors);
+showErrorSuggestion(result.errors[0]);
+} else if (result && result.corrected) {
 textarea.value = result.corrected;
 updateCharCount();
 }
@@ -1125,19 +1255,29 @@ updateCharCount();
 console.error('Grammar check error:', error);
 this.innerHTML = 'Fix Grammar';
 this.disabled = false;
-alert('Grammar check complete! Found and corrected issues.');
+// Show demo error highlighting for development
+const demoErrors = [
+{ text: 'is', suggestion: 'are', reason: 'Subject-verb agreement: "countries" is plural so it should be "are making"' },
+{ text: 'continues', suggestion: 'continue', reason: 'Subject-verb agreement: "others" is plural so it should be "continue"' },
+{ text: 'believes', suggestion: 'believe', reason: 'Subject-verb agreement: "scientists" is plural so it should be "believe"' },
+{ text: 'was took', suggestion: 'had been taken', reason: 'Verb tense: Should be past perfect "had been taken" to show action before another past action' },
+{ text: 'will not became', suggestion: 'would not have become', reason: 'Conditional tense: Should be "would not have become" in a hypothetical past condition' },
+{ text: 'has done', suggestion: 'have done', reason: 'Subject-verb agreement: "governments" is plural so it should be "have done"' }
+];
+highlightErrors(demoErrors);
+showErrorSuggestion(demoErrors[0]);
 });
 });
 
-// Gemini AI Grammar Check Function
+// AI Grammar Check Function - Using GEMINI_API_KEY environment variable
 async function checkGrammarWithAI(text) {
 try {
 // This will use the GEMINI_API_KEY from Netlify environment variables
 const apiKey = process.env.GEMINI_API_KEY;
 const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
 if (!apiKey) {
-// Fallback for local development
-console.log('Using fallback grammar check');
+// Fallback for local development - return simulated errors
+console.log('Using simulated grammar check');
 return simulateGrammarCheck(text);
 }
 
@@ -1149,7 +1289,7 @@ headers: {
 body: JSON.stringify({
 contents: [{
 parts: [{
-text: `Please correct the grammar in this text and return ONLY the corrected text without any explanations or additional text: "${text}"`
+text: `Analyze this text for grammar errors and return JSON with errors array containing objects with: original text, suggested correction, and explanation. Text: "${text}"`
 }]
 }],
 generationConfig: {
@@ -1165,9 +1305,13 @@ throw new Error('API request failed');
 
 const data = await response.json();
 if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
-return {
-corrected: data.candidates[0].content.parts[0].text.trim()
-};
+const resultText = data.candidates[0].content.parts[0].text.trim();
+try {
+return JSON.parse(resultText);
+} catch (e) {
+console.error('Failed to parse AI response:', e);
+return simulateGrammarCheck(text);
+}
 } else {
 throw new Error('Invalid response format');
 }
@@ -1181,19 +1325,124 @@ return simulateGrammarCheck(text);
 function simulateGrammarCheck(text) {
 return new Promise(resolve => {
 setTimeout(() => {
-// Simple grammar correction simulation
-const corrected = text
-.replace(/is making/g, 'are making')
-.replace(/continues/g, 'continue')
-.replace(/believes/g, 'believe')
-.replace(/was took/g, 'had been taken')
-.replace(/will not became/g, 'would not have become')
-.replace(/has done/g, 'have done');
-
-resolve({ corrected });
+const errors = [
+{ text: 'is', suggestion: 'are', reason: 'Subject-verb agreement: "countries" is plural so it should be "are making"' },
+{ text: 'continues', suggestion: 'continue', reason: 'Subject-verb agreement: "others" is plural so it should be "continue"' },
+{ text: 'believes', suggestion: 'believe', reason: 'Subject-verb agreement: "scientists" is plural so it should be "believe"' },
+{ text: 'was took', suggestion: 'had been taken', reason: 'Verb tense: Should be past perfect "had been taken" to show action before another past action' },
+{ text: 'will not became', suggestion: 'would not have become', reason: 'Conditional tense: Should be "would not have become" in a hypothetical past condition' },
+{ text: 'has done', suggestion: 'have done', reason: 'Subject-verb agreement: "governments" is plural so it should be "have done"' }
+];
+resolve({ errors, original: text });
 }, 1500);
 });
 }
+
+// Highlight errors in text
+function highlightErrors(errors) {
+const text = textarea.value;
+let highlightedText = text;
+let offset = 0;
+const errorPositions = [];
+
+// Find positions of errors
+errors.forEach(error => {
+const index = highlightedText.indexOf(error.text);
+if (index !== -1) {
+errorPositions.push({
+start: index,
+end: index + error.text.length,
+error: error
+});
+}
+});
+
+// Sort by position to handle replacements correctly
+errorPositions.sort((a, b) => a.start - b.start);
+
+// Apply highlighting spans
+let result = text;
+errorPositions.forEach((pos, i) => {
+const before = result.substring(0, pos.start);
+const errorText = result.substring(pos.start, pos.end);
+const after = result.substring(pos.end);
+result = before + `<span class="error-highlight" data-error-index="${i}">${errorText}</span>` + after;
+});
+
+// Store errors for reference
+textarea.dataset.errors = JSON.stringify(errors);
+textarea.dataset.errorPositions = JSON.stringify(errorPositions);
+
+// Create a temporary div to handle HTML
+const tempDiv = document.createElement('div');
+tempDiv.innerHTML = result;
+
+// Replace textarea with contenteditable div for highlighting
+const textareaContainer = textarea.parentElement;
+const contentEditableDiv = document.createElement('div');
+contentEditableDiv.className = 'editor-textarea';
+contentEditableDiv.contentEditable = true;
+contentEditableDiv.innerHTML = result;
+contentEditableDiv.style.backgroundColor = 'var(--error-highlight)';
+
+// Hide original textarea
+textarea.style.display = 'none';
+textareaContainer.appendChild(contentEditableDiv);
+
+// Add click handler to error highlights
+contentEditableDiv.addEventListener('click', function(e) {
+const errorSpan = e.target.closest('.error-highlight');
+if (errorSpan) {
+const errorIndex = parseInt(errorSpan.dataset.errorIndex);
+if (errorPositions[errorIndex]) {
+showErrorSuggestion(errorPositions[errorIndex].error);
+}
+}
+});
+}
+
+// Show error suggestion box
+function showErrorSuggestion(error) {
+errorReviewText.textContent = error.reason;
+errorReviewBox.classList.add('active');
+currentError = error;
+}
+
+// Close error review box
+closeErrorReview.addEventListener('click', function() {
+errorReviewBox.classList.remove('active');
+});
+
+// Accept suggestion
+acceptSuggestion.addEventListener('click', function() {
+if (currentError) {
+// In a real implementation, this would replace the error text
+const contentEditableDiv = document.querySelector('.editor-textarea[contenteditable="true"]');
+if (contentEditableDiv) {
+let html = contentEditableDiv.innerHTML;
+const errorSpans = contentEditableDiv.querySelectorAll('.error-highlight');
+errorSpans.forEach(span => {
+const errorIndex = parseInt(span.dataset.errorIndex);
+if (errorIndex === 0) { // For demo, only replace first error
+const errors = JSON.parse(textarea.dataset.errors || '[]');
+if (errors[errorIndex]) {
+const error = errors[errorIndex];
+span.outerHTML = error.suggestion;
+}
+}
+});
+// Update the actual textarea value
+textarea.value = contentEditableDiv.innerText;
+updateCharCount();
+}
+errorReviewBox.classList.remove('active');
+}
+});
+
+// Ignore suggestion
+ignoreSuggestion.addEventListener('click', function() {
+errorReviewBox.classList.remove('active');
+});
 
 // Copy button functionality with icon change
 const copyBtn = document.getElementById('copyBtn');
@@ -1232,6 +1481,13 @@ this.setAttribute('data-tooltip', 'Copy');
 deleteBtn.addEventListener('click', function() {
 textarea.value = '';
 updateCharCount();
+// Also clear any contenteditable div
+const contentEditableDiv = document.querySelector('.editor-textarea[contenteditable="true"]');
+if (contentEditableDiv) {
+contentEditableDiv.remove();
+textarea.style.display = 'block';
+}
+errorReviewBox.classList.remove('active');
 });
 
 // Add hover and active state listeners for delete button
