@@ -1,1275 +1,1280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outparse | Grammar Checker & Writing Assistant</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #2ba37b;
-            --hero-gradient-start: #f2fcda;
-            --hero-gradient-end: #e2fbec;
-            --footer-bg: #f5f5f7;
-            --text-dark: #333;
-            --text-light: #666;
-            --white: #ffffff;
-            --border-color: #eaeaea;
-            --shadow: rgba(0, 0, 0, 0.08);
-            --delete-red: #ff4444;
-            --delete-red-hover: #ff0000;
-            --link-blue: #2563eb;
-            --faq-bg: #f9fafb;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
-        /* Header Styles */
-        header {
-            background-color: var(--white);
-            box-shadow: 0 2px 10px var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 70px;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-svg {
-            width: 32px;
-            height: 32px;
-            color: var(--text-dark);
-            transition: transform 0.3s ease;
-        }
-
-        .logo-container:hover .logo-svg {
-            transform: scale(1.1);
-        }
-
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        /* Desktop Navigation */
-        .desktop-nav {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 500;
-            padding: 8px 0;
-            position: relative;
-            transition: color 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-color);
-        }
-
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: var(--white);
-            min-width: 200px;
-            box-shadow: 0 8px 16px var(--shadow);
-            border-radius: 8px;
-            padding: 10px 0;
-            z-index: 1;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .dropdown-content a {
-            color: var(--text-dark);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            transition: background-color 0.3s;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f9f9f9;
-            color: var(--primary-color);
-        }
-
-        .dropdown-toggle {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 10px 22px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Roboto', sans-serif;
-            font-size: 0.95rem;
-            border: none;
-        }
-
-        .btn-login {
-            background-color: transparent;
-            color: var(--text-dark);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-login:hover {
-            background-color: #f9f9f9;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #248f6c;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(43, 163, 123, 0.3);
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--text-dark);
-            width: 32px;
-            height: 32px;
-        }
-
-        .mobile-menu-btn svg {
-            width: 100%;
-            height: 100%;
-            stroke: var(--text-dark);
-        }
-
-        .mobile-menu {
-            display: none;
-            background-color: var(--white);
-            padding: 20px;
-            box-shadow: 0 5px 15px var(--shadow);
-            position: absolute;
-            top: 70px;
-            left: 0;
-            right: 0;
-            z-index: 99;
-        }
-
-        .mobile-menu.active {
-            display: block;
-        }
-
-        .mobile-nav-links {
-            list-style: none;
-            margin-bottom: 20px;
-        }
-
-        .mobile-nav-links li {
-            margin-bottom: 15px;
-        }
-
-        .mobile-nav-links a {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 500;
-            display: block;
-            padding: 8px 0;
-        }
-
-        .mobile-dropdown-content {
-            padding-left: 15px;
-            margin-top: 10px;
-        }
-
-        .mobile-dropdown-content a {
-            font-weight: 400;
-            font-size: 0.95rem;
-            padding: 6px 0;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(to right, var(--hero-gradient-start), var(--hero-gradient-end));
-            padding: 60px 20px 40px;
-        }
-
-        .hero-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .hero-content h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            color: var(--text-dark);
-        }
-
-        .hero-content p {
-            font-size: 1.2rem;
-            color: var(--text-light);
-            margin-bottom: 30px;
-        }
-
-        /* Editor Card */
-        .editor-card {
-            background-color: var(--white);
-            border-radius: 24px;
-            border: 1px solid #f0f0f0;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            position: relative;
-            height: 400px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .editor-top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
-            background-color: var(--white);
-            flex-shrink: 0;
-        }
-
-        .editor-actions {
-            display: flex;
-            gap: 15px;
-        }
-
-        .editor-action-btn {
-            background: none;
-            border: none;
-            color: var(--text-light);
-            cursor: pointer;
-            font-size: 1rem;
-            transition: color 0.3s;
-            position: relative;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-        }
-
-        .editor-action-btn svg {
-            width: 20px;
-            height: 20px;
-            transition: color 0.3s, transform 0.2s;
-        }
-
-        .editor-action-btn:hover svg {
-            transform: scale(1.1);
-        }
-
-        /* Delete button specific styles */
-        .editor-action-btn.delete-btn:hover svg,
-        .editor-action-btn.delete-btn:active svg {
-            color: var(--delete-red-hover) !important;
-        }
-
-        /* Tooltip */
-        .editor-action-btn::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #f8f9fa;
-            color: var(--text-dark);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            pointer-events: none;
-            z-index: 10;
-            border: 1px solid #dee2e6;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-top: 5px;
-        }
-
-        .editor-action-btn:hover::after {
-            opacity: 1;
-            visibility: visible;
-            top: calc(100% + 5px);
-        }
-
-        .editor-action-btn.copy-success svg {
-            color: var(--primary-color) !important;
-        }
-
-        .editor-menu-btn {
-            background: none;
-            border: none;
-            color: var(--text-light);
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        .editor-textarea-container {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .editor-textarea {
-            width: 100%;
-            height: 100%;
-            padding: 20px;
-            border: none;
-            font-family: 'Roboto', sans-serif;
-            font-size: 1rem;
-            line-height: 1.6;
-            outline: none;
-            background-color: var(--white);
-            resize: none;
-            overflow-y: auto;
-        }
-
-        .editor-bottom-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            border-top: 1px solid var(--border-color);
-            background-color: var(--white);
-            flex-shrink: 0;
-        }
-
-        .char-count {
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        .char-count span {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        /* Editor center actions */
-        .editor-center-actions {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            padding: 40px 20px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-        }
-
-        .center-action-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Roboto', sans-serif;
-            font-size: 0.95rem;
-            border: 1px solid var(--border-color);
-            background-color: var(--white);
-            color: var(--text-dark);
-        }
-
-        .center-action-btn:hover {
-            background-color: #f9f9f9;
-            transform: translateY(-2px);
-        }
-
-        .center-action-btn svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* FAQ Section */
-        .faq-section {
-            padding: 80px 20px;
-            background-color: var(--faq-bg);
-        }
-
-        .faq-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .faq-container h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 40px;
-            text-align: center;
-            color: var(--text-dark);
-        }
-
-        .faq-item {
-            background-color: var(--white);
-            border-radius: 12px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px var(--shadow);
-        }
-
-        .faq-question {
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .faq-question:hover {
-            background-color: #f9f9f9;
-        }
-
-        .faq-icon {
-            margin-right: 15px;
-            transition: transform 0.3s;
-            color: var(--primary-color);
-        }
-
-        .faq-question.active .faq-icon {
-            transform: rotate(90deg);
-        }
-
-        .faq-question h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            flex: 1;
-        }
-
-        .faq-answer {
-            padding: 0 20px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-        }
-
-        .faq-answer.active {
-            padding: 20px;
-            max-height: 500px;
-        }
-
-        .faq-answer p {
-            color: var(--text-light);
-            line-height: 1.6;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--footer-bg);
-            padding: 60px 20px 30px;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-columns {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-column h3 {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            color: var(--text-dark);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-column ul {
-            list-style: none;
-        }
-
-        .footer-column ul li {
-            margin-bottom: 12px;
-        }
-
-        .footer-column ul li a {
-            text-decoration: none;
-            color: var(--text-light);
-            transition: color 0.3s;
-        }
-
-        .footer-column ul li a:hover {
-            color: var(--primary-color);
-        }
-
-        .newsletter-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .newsletter-input {
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 50px;
-            font-family: 'Roboto', sans-serif;
-            font-size: 0.95rem;
-            outline: none;
-        }
-
-        .newsletter-btn {
-            padding: 12px 15px;
-            border-radius: 50px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .newsletter-btn:hover {
-            background-color: #248f6c;
-        }
-
-        .consent-text {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin-top: 10px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            background-color: #e9e9e9;
-            border-radius: 50%;
-            color: var(--text-dark);
-            transition: all 0.3s;
-        }
-
-        .social-links a:hover {
-            background-color: var(--primary-color);
-            color: white;
-            transform: translateY(-3px);
-        }
-
-        .footer-separator {
-            height: 1px;
-            background-color: var(--border-color);
-            margin: 30px 0;
-        }
-
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .copyright {
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        .footer-bottom-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .footer-bottom-links a {
-            color: var(--link-blue);
-            text-decoration: underline;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .footer-bottom-links a:hover {
-            color: #1d4ed8;
-            text-decoration: underline;
-        }
-
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-light);
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .hero-container {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .footer-columns {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .editor-card {
-                height: 450px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .desktop-nav {
-                display: none;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .footer-column h3 {
-                cursor: pointer;
-            }
-
-            .mobile-toggle {
-                display: block;
-            }
-
-            .footer-column ul {
-                display: none;
-            }
-
-            .footer-column.active ul {
-                display: block;
-            }
-
-            .footer-column.active .mobile-toggle i {
-                transform: rotate(180deg);
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-
-            .footer-columns {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-
-            .editor-card {
-                height: 500px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outparse | Grammar Checker & Writing Assistant</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+--primary-color: #2ba37b;
+--hero-gradient-start: #f2fcda;
+--hero-gradient-end: #e2fbec;
+--footer-bg: #f5f5f7;
+--text-dark: #333;
+--text-light: #666;
+--white: #ffffff;
+--border-color: #eaeaea;
+--shadow: rgba(0, 0, 0, 0.08);
+--delete-red: #ff4444;
+--delete-red-hover: #ff0000;
+--link-blue: #2563eb;
+--faq-bg: #f9fafb;
+}
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: 'Roboto', sans-serif;
+color: var(--text-dark);
+line-height: 1.6;
+}
+
+/* Header Styles */
+header {
+background-color: var(--white);
+box-shadow: 0 2px 10px var(--shadow);
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.header-container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 0 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+height: 70px;
+}
+
+.logo-container {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.logo-svg {
+width: 32px;
+height: 32px;
+color: var(--text-dark);
+transition: transform 0.3s ease;
+}
+
+.logo-container:hover .logo-svg {
+transform: scale(1.1);
+}
+
+.logo-text {
+font-size: 1.5rem;
+font-weight: 700;
+color: var(--text-dark);
+}
+
+/* Desktop Navigation */
+.desktop-nav {
+display: flex;
+align-items: center;
+gap: 30px;
+height: 100%;
+}
+
+.nav-links {
+display: flex;
+list-style: none;
+gap: 25px;
+height: 100%;
+align-items: center;
+}
+
+.nav-link {
+text-decoration: none;
+color: var(--text-dark);
+font-weight: 500;
+padding: 8px 0;
+position: relative;
+transition: color 0.3s ease;
+display: flex;
+align-items: center;
+height: 100%;
+}
+
+.nav-link:hover {
+color: var(--primary-color);
+}
+
+.dropdown {
+position: relative;
+height: 100%;
+display: flex;
+align-items: center;
+}
+
+.dropdown-content {
+display: none;
+position: absolute;
+top: 100%;
+left: 0;
+background-color: var(--white);
+min-width: 200px;
+box-shadow: 0 8px 16px var(--shadow);
+border-radius: 8px;
+padding: 10px 0;
+z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+display: block;
+}
+
+.dropdown-content a {
+color: var(--text-dark);
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+transition: background-color 0.3s;
+}
+
+.dropdown-content a:hover {
+background-color: #f9f9f9;
+color: var(--primary-color);
+}
+
+.dropdown-toggle {
+display: flex;
+align-items: center;
+gap: 5px;
+height: 100%;
+}
+
+.cta-buttons {
+display: flex;
+gap: 15px;
+}
+
+.btn {
+padding: 10px 22px;
+border-radius: 50px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s ease;
+font-family: 'Roboto', sans-serif;
+font-size: 0.95rem;
+border: none;
+}
+
+.btn-login {
+background-color: transparent;
+color: var(--text-dark);
+border: 1px solid var(--border-color);
+}
+
+.btn-login:hover {
+background-color: #f9f9f9;
+}
+
+.btn-primary {
+background-color: var(--primary-color);
+color: white;
+}
+
+.btn-primary:hover {
+background-color: #248f6c;
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(43, 163, 123, 0.3);
+}
+
+/* Mobile Menu */
+.mobile-menu-btn {
+display: none;
+background: none;
+border: none;
+cursor: pointer;
+color: var(--text-dark);
+width: 32px;
+height: 32px;
+}
+
+.mobile-menu-btn svg {
+width: 100%;
+height: 100%;
+stroke: var(--text-dark);
+}
+
+.mobile-menu {
+display: none;
+background-color: var(--white);
+padding: 20px;
+box-shadow: 0 5px 15px var(--shadow);
+position: absolute;
+top: 70px;
+left: 0;
+right: 0;
+z-index: 99;
+}
+
+.mobile-menu.active {
+display: block;
+}
+
+.mobile-nav-links {
+list-style: none;
+margin-bottom: 20px;
+}
+
+.mobile-nav-links li {
+margin-bottom: 15px;
+}
+
+.mobile-nav-links a {
+text-decoration: none;
+color: var(--text-dark);
+font-weight: 500;
+display: block;
+padding: 8px 0;
+}
+
+.mobile-dropdown-content {
+padding-left: 15px;
+margin-top: 10px;
+}
+
+.mobile-dropdown-content a {
+font-weight: 400;
+font-size: 0.95rem;
+padding: 6px 0;
+}
+
+/* Hero Section */
+.hero {
+background: linear-gradient(to right, var(--hero-gradient-start), var(--hero-gradient-end));
+padding: 60px 20px 40px;
+}
+
+.hero-container {
+max-width: 1200px;
+margin: 0 auto;
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 40px;
+align-items: center;
+}
+
+.hero-content h1 {
+font-size: 3rem;
+font-weight: 700;
+line-height: 1.2;
+margin-bottom: 20px;
+color: var(--text-dark);
+}
+
+.hero-content p {
+font-size: 1.2rem;
+color: var(--text-light);
+margin-bottom: 30px;
+}
+
+/* Editor Card */
+.editor-card {
+background-color: var(--white);
+border-radius: 24px;
+border: 1px solid #f0f0f0;
+box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+overflow: hidden;
+backdrop-filter: blur(10px);
+position: relative;
+height: 400px;
+display: flex;
+flex-direction: column;
+}
+
+.editor-top-bar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 15px 20px;
+border-bottom: 1px solid var(--border-color);
+background-color: var(--white);
+flex-shrink: 0;
+}
+
+.editor-actions {
+display: flex;
+gap: 15px;
+}
+
+.editor-action-btn {
+background: none;
+border: none;
+color: var(--text-light);
+cursor: pointer;
+font-size: 1rem;
+transition: color 0.3s;
+position: relative;
+width: 32px;
+height: 32px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 0;
+}
+
+.editor-action-btn svg {
+width: 20px;
+height: 20px;
+transition: color 0.3s, transform 0.2s;
+}
+
+.editor-action-btn:hover svg {
+transform: scale(1.1);
+}
+
+/* Delete button specific styles */
+.editor-action-btn.delete-btn:hover svg,
+.editor-action-btn.delete-btn:active svg {
+color: var(--delete-red-hover) !important;
+}
+
+/* Tooltip */
+.editor-action-btn::after {
+content: attr(data-tooltip);
+position: absolute;
+top: 100%;
+left: 50%;
+transform: translateX(-50%);
+background-color: #f8f9fa;
+color: var(--text-dark);
+padding: 6px 12px;
+border-radius: 6px;
+font-size: 0.8rem;
+white-space: nowrap;
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s;
+pointer-events: none;
+z-index: 10;
+border: 1px solid #dee2e6;
+box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+margin-top: 5px;
+}
+
+.editor-action-btn:hover::after {
+opacity: 1;
+visibility: visible;
+top: calc(100% + 5px);
+}
+
+.editor-action-btn.copy-success svg {
+color: var(--primary-color) !important;
+}
+
+.editor-menu-btn {
+background: none;
+border: none;
+color: var(--text-light);
+cursor: pointer;
+font-size: 1.2rem;
+}
+
+.editor-textarea-container {
+flex: 1;
+overflow: hidden;
+position: relative;
+}
+
+.editor-textarea {
+width: 100%;
+height: 100%;
+padding: 20px;
+border: none;
+font-family: 'Roboto', sans-serif;
+font-size: 1rem;
+line-height: 1.6;
+outline: none;
+background-color: var(--white);
+resize: none;
+overflow-y: auto;
+}
+
+.editor-bottom-bar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 15px 20px;
+border-top: 1px solid var(--border-color);
+background-color: var(--white);
+flex-shrink: 0;
+}
+
+.char-count {
+color: var(--text-light);
+font-size: 0.9rem;
+}
+
+.char-count span {
+color: var(--primary-color);
+font-weight: 600;
+}
+
+/* Editor center actions */
+.editor-center-actions {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 15px;
+padding: 40px 20px;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+z-index: 2;
+background-color: rgba(255, 255, 255, 0.9);
+border-radius: 12px;
+}
+
+.center-action-btn {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 12px 24px;
+border-radius: 50px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s ease;
+font-family: 'Roboto', sans-serif;
+font-size: 0.95rem;
+border: 1px solid var(--border-color);
+background-color: var(--white);
+color: var(--text-dark);
+}
+
+.center-action-btn:hover {
+background-color: #f9f9f9;
+transform: translateY(-2px);
+}
+
+.center-action-btn svg {
+width: 20px;
+height: 20px;
+}
+
+/* FAQ Section */
+.faq-section {
+padding: 80px 20px;
+background-color: var(--faq-bg);
+}
+
+.faq-container {
+max-width: 1200px;
+margin: 0 auto;
+}
+
+.faq-container h2 {
+font-size: 2.5rem;
+font-weight: 700;
+margin-bottom: 40px;
+text-align: center;
+color: var(--text-dark);
+}
+
+.faq-item {
+background-color: var(--white);
+border-radius: 12px;
+margin-bottom: 15px;
+overflow: hidden;
+box-shadow: 0 2px 8px var(--shadow);
+}
+
+.faq-question {
+padding: 20px;
+display: flex;
+align-items: center;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+
+.faq-question:hover {
+background-color: #f9f9f9;
+}
+
+.faq-icon {
+margin-right: 15px;
+transition: transform 0.3s;
+color: var(--text-dark);
+}
+
+.faq-question.active .faq-icon {
+transform: rotate(90deg);
+}
+
+.faq-question h3 {
+font-size: 1.1rem;
+font-weight: 600;
+color: var(--text-dark);
+flex: 1;
+}
+
+.faq-answer {
+padding: 0 20px;
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.faq-answer.active {
+padding: 20px;
+max-height: 500px;
+}
+
+.faq-answer p {
+color: var(--text-light);
+line-height: 1.6;
+}
+
+/* Footer */
+footer {
+background-color: var(--footer-bg);
+padding: 60px 20px 30px;
+}
+
+.footer-container {
+max-width: 1200px;
+margin: 0 auto;
+}
+
+.footer-columns {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 40px;
+margin-bottom: 40px;
+}
+
+.footer-column h3 {
+font-size: 1.1rem;
+margin-bottom: 20px;
+color: var(--text-dark);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.footer-column ul {
+list-style: none;
+}
+
+.footer-column ul li {
+margin-bottom: 12px;
+}
+
+.footer-column ul li a {
+text-decoration: none;
+color: var(--text-light);
+transition: color 0.3s;
+}
+
+.footer-column ul li a:hover {
+color: var(--primary-color);
+}
+
+.newsletter-form {
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+.newsletter-input {
+padding: 12px 15px;
+border: 1px solid var(--border-color);
+border-radius: 50px;
+font-family: 'Roboto', sans-serif;
+font-size: 0.95rem;
+outline: none;
+}
+
+.newsletter-btn {
+padding: 12px 15px;
+border-radius: 50px;
+background-color: var(--primary-color);
+color: white;
+border: none;
+font-weight: 600;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+
+.newsletter-btn:hover {
+background-color: #248f6c;
+}
+
+.consent-text {
+font-size: 0.8rem;
+color: var(--text-light);
+margin-top: 10px;
+}
+
+.social-links {
+display: flex;
+gap: 15px;
+}
+
+.social-links a {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 36px;
+height: 36px;
+background-color: #e9e9e9;
+border-radius: 50%;
+color: var(--text-dark);
+transition: all 0.3s;
+}
+
+.social-links a:hover {
+background-color: var(--primary-color);
+color: white;
+transform: translateY(-3px);
+}
+
+.footer-separator {
+height: 1px;
+background-color: var(--border-color);
+margin: 30px 0;
+}
+
+.footer-bottom {
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
+gap: 20px;
+}
+
+.copyright {
+color: var(--text-light);
+font-size: 0.9rem;
+}
+
+.footer-bottom-links {
+display: flex;
+gap: 20px;
+}
+
+.footer-bottom-links a {
+color: var(--link-blue);
+text-decoration: underline;
+font-size: 0.9rem;
+font-weight: 500;
+transition: color 0.3s;
+}
+
+.footer-bottom-links a:hover {
+color: #1d4ed8;
+text-decoration: underline;
+}
+
+.mobile-toggle {
+display: none;
+background: none;
+border: none;
+color: var(--text-light);
+cursor: pointer;
+font-size: 0.9rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+.hero-container {
+grid-template-columns: 1fr;
+gap: 40px;
+}
+
+.hero-content h1 {
+font-size: 2.5rem;
+}
+
+.footer-columns {
+grid-template-columns: repeat(2, 1fr);
+}
+
+.editor-card {
+height: 450px;
+}
+}
+
+@media (max-width: 768px) {
+.desktop-nav {
+display: none;
+}
+
+.mobile-menu-btn {
+display: block;
+}
+
+.footer-column h3 {
+cursor: pointer;
+}
+
+.mobile-toggle {
+display: block;
+}
+
+.footer-column ul {
+display: none;
+}
+
+.footer-column.active ul {
+display: block;
+}
+
+.footer-column.active .mobile-toggle i {
+transform: rotate(180deg);
+}
+
+.footer-bottom {
+flex-direction: column;
+text-align: center;
+}
+}
+
+@media (max-width: 576px) {
+.hero-content h1 {
+font-size: 2rem;
+}
+
+.footer-columns {
+grid-template-columns: 1fr;
+}
+
+.cta-buttons {
+flex-direction: column;
+width: 100%;
+}
+
+.btn {
+width: 100%;
+text-align: center;
+}
+
+.editor-card {
+height: 500px;
+}
+}
+</style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <svg class="logo-svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 3L14.5 8.5L20 11L14.5 13.5L12 19L9.5 13.5L4 11L9.5 8.5L12 3Z"></path>
-                    <path d="M5 3L6 5L8 6L6 7L5 9L4 7L2 6L4 5L5 3Z"></path>
-                    <path d="M19 15L20 17L22 18L20 19L19 21L18 19L16 18L18 17L19 15Z"></path>
-                </svg>
-                <span class="logo-text">Outparse</span>
-            </div>
+<!-- Header -->
+<header>
+<div class="header-container">
+<div class="logo-container">
+<svg class="logo-svg" viewBox="0 0 24 24" fill="currentColor">
+<path d="M12 3L14.5 8.5L20 11L14.5 13.5L12 19L9.5 13.5L4 11L9.5 8.5L12 3Z"></path>
+<path d="M5 3L6 5L8 6L6 7L5 9L4 7L2 6L4 5L5 3Z"></path>
+<path d="M19 15L20 17L22 18L20 19L19 21L18 19L16 18L18 17L19 15Z"></path>
+</svg>
+<span class="logo-text">Outparse</span>
+</div>
 
-            <!-- Desktop Navigation -->
-            <nav class="desktop-nav">
-                <ul class="nav-links">
-                    <li class="dropdown">
-                        <a href="#" class="nav-link dropdown-toggle">
-                            Features <i class="fas fa-chevron-down"></i>
-                        </a>
-                        <div class="dropdown-content">
-                            <a href="#">Grammar Checker</a>
-                            <a href="#">Quiz</a>
-                            <a href="#">Word Puzzle</a>
-                            <a href="#">Vocabulary Builder</a>
-                            <a href="#">Crossword</a>
-                            <a href="#">Spell Checker</a>
-                        </div>
-                    </li>
-                    <li><a href="#" class="nav-link">Pricing</a></li>
-                    <li><a href="#" class="nav-link">Blog</a></li>
-                </ul>
-            </nav>
+<!-- Desktop Navigation -->
+<nav class="desktop-nav">
+<ul class="nav-links">
+<li class="dropdown">
+<a href="#" class="nav-link dropdown-toggle">
+Features <i class="fas fa-chevron-down"></i>
+</a>
+<div class="dropdown-content">
+<a href="#">Grammar Checker</a>
+<a href="#">Quiz</a>
+<a href="#">Word Puzzle</a>
+<a href="#">Vocabulary Builder</a>
+<a href="#">Crossword</a>
+<a href="#">Spell Checker</a>
+</div>
+</li>
+<li><a href="#" class="nav-link">Pricing</a></li>
+<li><a href="#" class="nav-link">Blog</a></li>
+</ul>
+</nav>
 
-            <div class="cta-buttons">
-                <button class="btn btn-login">Log in</button>
-                <button class="btn btn-primary">Create account</button>
-            </div>
+<div class="cta-buttons">
+<button class="btn btn-login">Log in</button>
+<button class="btn btn-primary">Create account</button>
+</div>
 
-            <!-- Mobile Menu Button -->
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#000000">
-                    <line x1="16" y1="32" x2="48" y2="32"></line>
-                    <line x1="16" y1="20" x2="48" y2="20"></line>
-                    <line x1="16" y1="44" x2="48" y2="44"></line>
-                </svg>
-            </button>
-        </div>
+<!-- Mobile Menu Button -->
+<button class="mobile-menu-btn" id="mobileMenuBtn">
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#000000">
+<line x1="16" y1="32" x2="48" y2="32"></line>
+<line x1="16" y1="20" x2="48" y2="20"></line>
+<line x1="16" y1="44" x2="48" y2="44"></line>
+</svg>
+</button>
+</div>
 
-        <!-- Mobile Menu -->
-        <div class="mobile-menu" id="mobileMenu">
-            <button class="mobile-menu-btn" id="closeMenuBtn" style="position: absolute; top: 20px; right: 20px;">
-                <svg viewBox="0 0 512 512" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <line style="fill:none;stroke:#000000;stroke-width:13.4167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.6131;" x1="486.21" x2="26.739" y1="26.814" y2="486.139"></line>
-                    <line style="fill:none;stroke:#000000;stroke-width:13.4167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.6131;" x1="486.21" x2="26.739" y1="486.139" y2="26.814"></line>
-                </svg>
-            </button>
-            <ul class="mobile-nav-links">
-                <li><a href="#">Grammar Checker</a></li>
-                <li><a href="#">Quiz</a></li>
-                <li>
-                    <a href="#" class="mobile-dropdown-toggle">More Tools <i class="fas fa-chevron-down"></i></a>
-                    <div class="mobile-dropdown-content" id="mobileDropdown">
-                        <a href="#">Word Puzzle</a>
-                        <a href="#">Vocabulary Builder</a>
-                        <a href="#">Crossword</a>
-                        <a href="#">Spell Checker</a>
-                    </div>
-                </li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Pricing</a></li>
-            </ul>
-            <div class="cta-buttons">
-                <button class="btn btn-login">Log in</button>
-                <button class="btn btn-primary">Create account</button>
-            </div>
-        </div>
-    </header>
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+<button class="mobile-menu-btn" id="closeMenuBtn" style="position: absolute; top: 20px; right: 20px;">
+<svg viewBox="0 0 512 512" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<line style="fill:none;stroke:#000000;stroke-width:13.4167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.6131;" x1="486.21" x2="26.739" y1="26.814" y2="486.139"></line>
+<line style="fill:none;stroke:#000000;stroke-width:13.4167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.6131;" x1="486.21" x2="26.739" y1="486.139" y2="26.814"></line>
+</svg>
+</button>
+<ul class="mobile-nav-links">
+<li><a href="#">Grammar Checker</a></li>
+<li><a href="#">Quiz</a></li>
+<li>
+<a href="#" class="mobile-dropdown-toggle">More Tools <i class="fas fa-chevron-down"></i></a>
+<div class="mobile-dropdown-content" id="mobileDropdown">
+<a href="#">Word Puzzle</a>
+<a href="#">Vocabulary Builder</a>
+<a href="#">Crossword</a>
+<a href="#">Spell Checker</a>
+</div>
+</li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Pricing</a></li>
+</ul>
+<div class="cta-buttons">
+<button class="btn btn-login">Log in</button>
+<button class="btn btn-primary">Create account</button>
+</div>
+</div>
+</header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <h1>Elevate Your Writing with AI-Powered Grammar Checker</h1>
-                <p>Instantly improve your writing with our advanced grammar checker. Get suggestions for grammar, spelling, punctuation, and style to make your writing clear and professional.</p>
-            </div>
-            <div class="editor-card">
-                <div class="editor-top-bar">
-                    <div class="editor-actions">
-                        <button class="editor-action-btn" data-tooltip="Copy" id="copyBtn">
-                            <svg fill="currentColor" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false" style="display: block;">
-                                <path d="M5.5 4.63V17.25c0 1.8 1.46 3.25 3.25 3.25h8.62c-.31.88-1.15 1.5-2.13 1.5H8.75A4.75 4.75 0 014 17.25V6.75c0-.98.63-1.81 1.5-2.12zM17.75 2C18.99 2 20 3 20 4.25v13c0 1.24-1 2.25-2.25 2.25h-9c-1.24 0-2.25-1-2.25-2.25v-13C6.5 3.01 7.5 2 8.75 2h9zm0 1.5h-9a.75.75 0 00-.75.75v13c0 .41.34.75.75.75h9c.41 0 .75-.34.75-.75v-13a.75.75 0 00-.75-.75z" fill="currentColor"></path>
-                            </svg>
-                        </button>
-                        <button class="editor-action-btn delete-btn" data-tooltip="Delete" id="deleteBtn">
-                            <svg fill="currentColor" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false" style="display: block;">
-                                <path d="M10 5h4a2 2 0 10-4 0zM8.5 5a3.5 3.5 0 117 0h5.75a.75.75 0 010 1.5h-1.32l-1.17 12.11A3.75 3.75 0 0115.03 22H8.97a3.75 3.75 0 01-3.73-3.39L4.07 6.5H2.75a.75.75 0 010-1.5H8.5zm2 4.75a.75.75 0 00-1.5 0v7.5a.75.75 0 001.5 0v-7.5zM14.25 9c.41 0 .75.34.75.75v7.5a.75.75 0 01-1.5 0v-7.5c0-.41.34-.75.75-.75zm-7.52 9.47a2.25 2.25 0 002.24 2.03h6.06c1.15 0 2.12-.88 2.24-2.03L18.42 6.5H5.58l1.15 11.97z" fill="currentColor"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <button class="editor-menu-btn"><i class="fas fa-ellipsis-v"></i></button>
-                </div>
-                <div class="editor-textarea-container">
-                    <textarea class="editor-textarea" placeholder="Start typing or paste text here..." id="editorTextarea"></textarea>
-                    <div class="editor-center-actions" id="centerActions">
-                        <button class="center-action-btn" id="trySampleBtn">
-                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H13C16.7712 2 18.6569 2 19.8284 3.17157C21 4.34315 21 6.22876 21 10V14C21 17.7712 21 19.6569 19.8284 20.8284C18.6569 22 16.7712 22 13 22H11C7.22876 22 5.34315 22 4.17157 20.8284C3 19.6569 3 17.7712 3 14V10Z" stroke="#1C274C" stroke-width="1.5"></path>
-                                <path d="M8 10H16" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
-                                <path d="M8 14H13" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
-                            </svg>
-                            Try sample text
-                        </button>
-                        <button class="center-action-btn" id="uploadDocBtn">
-                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M13 3H8.2C7.0799 3 6.51984 3 6.09202 3.21799C5.71569 3.40973 5.40973 3.71569 5.21799 4.09202C5 4.51984 5 5.0799 5 6.2V17.8C5 18.9201 5 19.4802 5.21799 19.908C5.40973 20.2843 5.71569 20.5903 6.09202 20.782C6.51984 21 7.0799 21 8.2 21H12M13 3L19 9M13 3V7.4C13 7.96005 13 8.24008 13.109 8.45399C13.2049 8.64215 13.3578 8.79513 13.546 8.89101C13.7599 9 14.0399 9 14.6 9H19M19 9V10M15 19H21M18 16V22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Upload document
-                        </button>
-                    </div>
-                </div>
-                <div class="editor-bottom-bar">
-                    <div class="char-count"><span id="charCount">0</span> / 1000</div>
-                    <button class="btn btn-primary" id="fixGrammarBtn">Fix Grammar</button>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Hero Section -->
+<section class="hero">
+<div class="hero-container">
+<div class="hero-content">
+<h1>Elevate Your Writing with AI-Powered Grammar Checker</h1>
+<p>Instantly improve your writing with our advanced grammar checker. Get suggestions for grammar, spelling, punctuation, and style to make your writing clear and professional.</p>
+</div>
+<div class="editor-card">
+<div class="editor-top-bar">
+<div class="editor-actions">
+<button class="editor-action-btn" data-tooltip="Copy" id="copyBtn">
+<svg fill="currentColor" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false" style="display: block;">
+<path d="M5.5 4.63V17.25c0 1.8 1.46 3.25 3.25 3.25h8.62c-.31.88-1.15 1.5-2.13 1.5H8.75A4.75 4.75 0 014 17.25V6.75c0-.98.63-1.81 1.5-2.12zM17.75 2C18.99 2 20 3 20 4.25v13c0 1.24-1 2.25-2.25 2.25h-9c-1.24 0-2.25-1-2.25-2.25v-13C6.5 3.01 7.5 2 8.75 2h9zm0 1.5h-9a.75.75 0 00-.75.75v13c0 .41.34.75.75.75h9c.41 0 .75-.34.75-.75v-13a.75.75 0 00-.75-.75z" fill="currentColor"></path>
+</svg>
+</button>
+<button class="editor-action-btn delete-btn" data-tooltip="Delete" id="deleteBtn">
+<svg fill="currentColor" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false" style="display: block;">
+<path d="M10 5h4a2 2 0 10-4 0zM8.5 5a3.5 3.5 0 117 0h5.75a.75.75 0 010 1.5h-1.32l-1.17 12.11A3.75 3.75 0 0115.03 22H8.97a3.75 3.75 0 01-3.73-3.39L4.07 6.5H2.75a.75.75 0 010-1.5H8.5zm2 4.75a.75.75 0 00-1.5 0v7.5a.75.75 0 001.5 0v-7.5zM14.25 9c.41 0 .75.34.75.75v7.5a.75.75 0 01-1.5 0v-7.5c0-.41.34-.75.75-.75zm-7.52 9.47a2.25 2.25 0 002.24 2.03h6.06c1.15 0 2.12-.88 2.24-2.03L18.42 6.5H5.58l1.15 11.97z" fill="currentColor"></path>
+</svg>
+</button>
+</div>
+<button class="editor-menu-btn"><i class="fas fa-ellipsis-v"></i></button>
+</div>
+<div class="editor-textarea-container">
+<textarea class="editor-textarea" placeholder="Start typing or paste text here..." id="editorTextarea"></textarea>
+<div class="editor-center-actions" id="centerActions">
+<button class="center-action-btn" id="trySampleBtn">
+<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H13C16.7712 2 18.6569 2 19.8284 3.17157C21 4.34315 21 6.22876 21 10V14C21 17.7712 21 19.6569 19.8284 20.8284C18.6569 22 16.7712 22 13 22H11C7.22876 22 5.34315 22 4.17157 20.8284C3 19.6569 3 17.7712 3 14V10Z" stroke="#1C274C" stroke-width="1.5"></path>
+<path d="M8 10H16" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+<path d="M8 14H13" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+</svg>
+Try sample text
+</button>
+<button class="center-action-btn" id="uploadDocBtn">
+<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13 3H8.2C7.0799 3 6.51984 3 6.09202 3.21799C5.71569 3.40973 5.40973 3.71569 5.21799 4.09202C5 4.51984 5 5.0799 5 6.2V17.8C5 18.9201 5 19.4802 5.21799 19.908C5.40973 20.2843 5.71569 20.5903 6.09202 20.782C6.51984 21 7.0799 21 8.2 21H12M13 3L19 9M13 3V7.4C13 7.96005 13 8.24008 13.109 8.45399C13.2049 8.64215 13.3578 8.79513 13.546 8.89101C13.7599 9 14.0399 9 14.6 9H19M19 9V10M15 19H21M18 16V22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+Upload document
+</button>
+</div>
+</div>
+<div class="editor-bottom-bar">
+<div class="char-count"><span id="charCount">0</span> / 1000</div>
+<button class="btn btn-primary" id="fixGrammarBtn">Fix Grammar</button>
+</div>
+</div>
+</div>
+</section>
 
-    <!-- FAQ Section -->
-    <section class="faq-section">
-        <div class="faq-container">
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-item">
-                <div class="faq-question" data-faq="1">
-                    <i class="fas fa-chevron-right faq-icon"></i>
-                    <h3>How accurate is the grammar checker?</h3>
-                </div>
-                <div class="faq-answer" id="faq-answer-1">
-                    <p>Our grammar checker uses advanced AI technology with an accuracy rate of over 95% for common grammar, spelling, and punctuation errors. It's continually trained on millions of text samples to improve its detection capabilities.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" data-faq="2">
-                    <i class="fas fa-chevron-right faq-icon"></i>
-                    <h3>What types of documents can I check?</h3>
-                </div>
-                <div class="faq-answer" id="faq-answer-2">
-                    <p>You can check essays, reports, emails, blog posts, academic papers, business documents, and more. Our tool supports various writing styles and formats up to 1000 characters at a time.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" data-faq="3">
-                    <i class="fas fa-chevron-right faq-icon"></i>
-                    <h3>Is my text stored or used for training?</h3>
-                </div>
-                <div class="faq-answer" id="faq-answer-3">
-                    <p>No, we prioritize your privacy. Text processed through our grammar checker is not stored permanently and is only used for real-time analysis. We don't use your content for training our AI models.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" data-faq="4">
-                    <i class="fas fa-chevron-right faq-icon"></i>
-                    <h3>What languages are supported?</h3>
-                </div>
-                <div class="faq-answer" id="faq-answer-4">
-                    <p>Currently, we support English (US, UK, AU, and CA variants) with plans to add Spanish, French, German, and other major languages in upcoming updates.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" data-faq="5">
-                    <i class="fas fa-chevron-right faq-icon"></i>
-                    <h3>How does the AI-powered grammar check work?</h3>
-                </div>
-                <div class="faq-answer" id="faq-answer-5">
-                    <p>Our system uses DeepSeek AI technology combined with natural language processing to analyze sentence structure, grammar rules, punctuation, spelling, and style recommendations. It compares your text against grammatical patterns and suggests corrections.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- FAQ Section -->
+<section class="faq-section">
+<div class="faq-container">
+<h2>Frequently Asked Questions</h2>
+<div class="faq-item">
+<div class="faq-question" data-faq="1">
+<i class="fas fa-chevron-right faq-icon"></i>
+<h3>How accurate is the grammar checker?</h3>
+</div>
+<div class="faq-answer" id="faq-answer-1">
+<p>Our grammar checker uses advanced AI technology with an accuracy rate of over 95% for common grammar, spelling, and punctuation errors. It's continually trained on millions of text samples to improve its detection capabilities.</p>
+</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" data-faq="2">
+<i class="fas fa-chevron-right faq-icon"></i>
+<h3>What types of documents can I check?</h3>
+</div>
+<div class="faq-answer" id="faq-answer-2">
+<p>You can check essays, reports, emails, blog posts, academic papers, business documents, and more. Our tool supports various writing styles and formats up to 1000 characters at a time.</p>
+</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" data-faq="3">
+<i class="fas fa-chevron-right faq-icon"></i>
+<h3>Is my text stored or used for training?</h3>
+</div>
+<div class="faq-answer" id="faq-answer-3">
+<p>No, we prioritize your privacy. Text processed through our grammar checker is not stored permanently and is only used for real-time analysis. We don't use your content for training our AI models.</p>
+</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" data-faq="4">
+<i class="fas fa-chevron-right faq-icon"></i>
+<h3>What languages are supported?</h3>
+</div>
+<div class="faq-answer" id="faq-answer-4">
+<p>Currently, we support English (US, UK, AU, and CA variants) with plans to add Spanish, French, German, and other major languages in upcoming updates.</p>
+</div>
+</div>
+<div class="faq-item">
+<div class="faq-question" data-faq="5">
+<i class="fas fa-chevron-right faq-icon"></i>
+<h3>How does the AI-powered grammar check work?</h3>
+</div>
+<div class="faq-answer" id="faq-answer-5">
+<p>Our system uses Gemini AI technology combined with natural language processing to analyze sentence structure, grammar rules, punctuation, spelling, and style recommendations. It compares your text against grammatical patterns and suggests corrections.</p>
+</div>
+</div>
+</div>
+</section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-columns">
-                <!-- Newsletter Column -->
-                <div class="footer-column">
-                    <h3>Newsletter <button class="mobile-toggle"><i class="fas fa-chevron-down"></i></button></h3>
-                    <ul>
-                        <li>
-                            <div class="newsletter-form">
-                                <input type="email" class="newsletter-input" placeholder="Your email address">
-                                <button class="newsletter-btn">Subscribe</button>
-                                <p class="consent-text">By subscribing, you agree to our Privacy Policy and consent to receive updates from our company.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+<!-- Footer -->
+<footer>
+<div class="footer-container">
+<div class="footer-columns">
+<!-- Newsletter Column -->
+<div class="footer-column">
+<h3>Newsletter <button class="mobile-toggle"><i class="fas fa-chevron-down"></i></button></h3>
+<ul>
+<li>
+<div class="newsletter-form">
+<input type="email" class="newsletter-input" placeholder="Your email address">
+<button class="newsletter-btn">Subscribe</button>
+<p class="consent-text">By subscribing, you agree to our Privacy Policy and consent to receive updates from our company.</p>
+</div>
+</li>
+</ul>
+</div>
 
-                <!-- Features Column -->
-                <div class="footer-column">
-                    <h3>Features <button class="mobile-toggle"><i class="fas fa-chevron-down"></i></button></h3>
-                    <ul>
-                        <li><a href="#">Grammar Checker</a></li>
-                        <li><a href="#">Word Counter</a></li>
-                        <li><a href="#">Translator</a></li>
-                        <li><a href="#">Word Puzzle</a></li>
-                        <li><a href="#">Vocabulary Builder</a></li>
-                        <li><a href="#">Crossword</a></li>
-                        <li><a href="#">Spell Checker</a></li>
-                    </ul>
-                </div>
+<!-- Features Column -->
+<div class="footer-column">
+<h3>Features <button class="mobile-toggle"><i class="fas fa-chevron-down"></i></button></h3>
+<ul>
+<li><a href="#">Grammar Checker</a></li>
+<li><a href="#">Word Counter</a></li>
+<li><a href="#">Translator</a></li>
+<li><a href="#">Word Puzzle</a></li>
+<li><a href="#">Vocabulary Builder</a></li>
+<li><a href="#">Crossword</a></li>
+<li><a href="#">Spell Checker</a></li>
+</ul>
+</div>
 
-                <!-- Company Column -->
-                <div class="footer-column">
-                    <h3>Company <button class="mobile-toggle"><i class="fas fa-chevron-down"></i></button></h3>
-                    <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                    </ul>
-                </div>
+<!-- Company Column -->
+<div class="footer-column">
+<h3>Company <button class="mobile-toggle"><i class="fas fa-chevron-down"></i></button></h3>
+<ul>
+<li><a href="#">About Us</a></li>
+<li><a href="#">Contact Us</a></li>
+<li><a href="#">Privacy Policy</a></li>
+<li><a href="#">Terms of Service</a></li>
+</ul>
+</div>
 
-                <!-- Connect Column -->
-                <div class="footer-column">
-                    <h3>Connect <button class="mobile-toggle"><i class="fas fa-chevron-down"></i></button></h3>
-                    <ul>
-                        <li>
-                            <div class="social-links">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-youtube"></i></a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<!-- Connect Column -->
+<div class="footer-column">
+<h3>Connect <button class="mobile-toggle"><i class="fas fa-chevron-down"></i></button></h3>
+<ul>
+<li>
+<div class="social-links">
+<a href="#"><i class="fab fa-facebook-f"></i></a>
+<a href="#"><i class="fab fa-instagram"></i></a>
+<a href="#"><i class="fab fa-linkedin-in"></i></a>
+<a href="#"><i class="fab fa-twitter"></i></a>
+<a href="#"><i class="fab fa-youtube"></i></a>
+</div>
+</li>
+</ul>
+</div>
+</div>
 
-            <div class="footer-separator"></div>
+<div class="footer-separator"></div>
 
-            <div class="footer-bottom">
-                <div class="copyright">
-                    © <span id="currentYear"></span> Outparse. All rights reserved.
-                </div>
-                <div class="footer-bottom-links">
-                    <a href="#">Sitemap</a>
-                    <a href="#">LLM.txt</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+<div class="footer-bottom">
+<div class="copyright">
+© <span id="currentYear"></span> Outparse. All rights reserved.
+</div>
+<div class="footer-bottom-links">
+<a href="#">Sitemap</a>
+<a href="#">LLM.txt</a>
+</div>
+</div>
+</div>
+</footer>
 
-    <script>
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const closeMenuBtn = document.getElementById('closeMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mobileDropdownToggle = document.querySelector('.mobile-dropdown-toggle');
-        const mobileDropdown = document.getElementById('mobileDropdown');
+<script>
+// Mobile menu toggle
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const closeMenuBtn = document.getElementById('closeMenuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileDropdownToggle = document.querySelector('.mobile-dropdown-toggle');
+const mobileDropdown = document.getElementById('mobileDropdown');
 
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('active');
-        });
+mobileMenuBtn.addEventListener('click', () => {
+mobileMenu.classList.add('active');
+});
 
-        closeMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-        });
+closeMenuBtn.addEventListener('click', () => {
+mobileMenu.classList.remove('active');
+});
 
-        // Mobile dropdown toggle
-        if (mobileDropdownToggle) {
-            mobileDropdownToggle.addEventListener('click', (e) => {
-                e.preventDefault();
-                mobileDropdown.style.display = mobileDropdown.style.display === 'block' ? 'none' : 'block';
-                mobileDropdownToggle.querySelector('i').classList.toggle('fa-chevron-up');
-                mobileDropdownToggle.querySelector('i').classList.toggle('fa-chevron-down');
-            });
-        }
+// Mobile dropdown toggle
+if (mobileDropdownToggle) {
+mobileDropdownToggle.addEventListener('click', (e) => {
+e.preventDefault();
+mobileDropdown.style.display = mobileDropdown.style.display === 'block' ? 'none' : 'block';
+mobileDropdownToggle.querySelector('i').classList.toggle('fa-chevron-up');
+mobileDropdownToggle.querySelector('i').classList.toggle('fa-chevron-down');
+});
+}
 
-        // Footer column toggle for mobile
-        const footerColumnToggles = document.querySelectorAll('.mobile-toggle');
-        footerColumnToggles.forEach(toggle => {
-            toggle.addEventListener('click', function() {
-                const column = this.closest('.footer-column');
-                column.classList.toggle('active');
-            });
-        });
+// Footer column toggle for mobile
+const footerColumnToggles = document.querySelectorAll('.mobile-toggle');
+footerColumnToggles.forEach(toggle => {
+toggle.addEventListener('click', function() {
+const column = this.closest('.footer-column');
+column.classList.toggle('active');
+});
+});
 
-        // Set current year in copyright
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+// Set current year in copyright
+document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // Editor elements
-        const textarea = document.getElementById('editorTextarea');
-        const charCount = document.getElementById('charCount');
-        const centerActions = document.getElementById('centerActions');
-        const trySampleBtn = document.getElementById('trySampleBtn');
-        const uploadDocBtn = document.getElementById('uploadDocBtn');
-        const fixGrammarBtn = document.getElementById('fixGrammarBtn');
+// Editor elements
+const textarea = document.getElementById('editorTextarea');
+const charCount = document.getElementById('charCount');
+const centerActions = document.getElementById('centerActions');
+const trySampleBtn = document.getElementById('trySampleBtn');
+const uploadDocBtn = document.getElementById('uploadDocBtn');
+const fixGrammarBtn = document.getElementById('fixGrammarBtn');
 
-        // Character count for textarea
-        function updateCharCount() {
-            const count = textarea.value.length;
-            charCount.textContent = count;
+// Character count for textarea
+function updateCharCount() {
+const count = textarea.value.length;
+charCount.textContent = count;
 
-            if (count > 0) {
-                centerActions.style.display = 'none';
-            } else {
-                centerActions.style.display = 'flex';
-            }
+if (count > 0) {
+centerActions.style.display = 'none';
+} else {
+centerActions.style.display = 'flex';
+}
 
-            if (count > 900) {
-                charCount.style.color = '#e74c3c';
-            } else {
-                charCount.style.color = '#2ba37b';
-            }
-        }
+if (count > 900) {
+charCount.style.color = '#e74c3c';
+} else {
+charCount.style.color = '#2ba37b';
+}
+}
 
-        textarea.addEventListener('input', updateCharCount);
-        updateCharCount();
+textarea.addEventListener('input', updateCharCount);
+updateCharCount();
 
-        // Try sample text button
-        trySampleBtn.addEventListener('click', function() {
-            const sampleText = "Had governments taken climate change seriously decades ago, the world might not be facing such severe environmental problems today. While some countries is making progress, others continues to ignore scientific warnings, which put future generations at risk. Many scientists believes that if action was took earlier, these problems will not became so serious. However, few governments has done enough to change the situation.";
-            textarea.value = sampleText;
-            updateCharCount();
-        });
+// Try sample text button
+trySampleBtn.addEventListener('click', function() {
+const sampleText = "Had governments taken climate change seriously decades ago, the world might not be facing such severe environmental problems today. While some countries is making progress, others continues to ignore scientific warnings, which put future generations at risk. Many scientists believes that if action was took earlier, these problems will not became so serious. However, few governments has done enough to change the situation.";
+textarea.value = sampleText;
+updateCharCount();
+});
 
-        // Upload document button
-        uploadDocBtn.addEventListener('click', function() {
-            alert('Upload document feature would open a file dialog in a real application.');
-        });
+// Upload document button
+uploadDocBtn.addEventListener('click', function() {
+alert('Upload document feature would open a file dialog in a real application.');
+});
 
-        // Fix Grammar button functionality
-        fixGrammarBtn.addEventListener('click', function() {
-            const text = textarea.value;
-            if (text.trim().length === 0) {
-                alert('Please enter some text to check grammar.');
-                return;
-            }
+// Fix Grammar button functionality
+fixGrammarBtn.addEventListener('click', function() {
+const text = textarea.value;
+if (text.trim().length === 0) {
+alert('Please enter some text to check grammar.');
+return;
+}
 
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
-            this.disabled = true;
+this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+this.disabled = true;
 
-            // Use DeepSeek AI API (will be configured in Netlify environment variables)
-            checkGrammarWithAI(text).then(result => {
-                this.innerHTML = 'Fix Grammar';
-                this.disabled = false;
-                if (result && result.corrected) {
-                    textarea.value = result.corrected;
-                    updateCharCount();
-                }
-            }).catch(error => {
-                console.error('Grammar check error:', error);
-                this.innerHTML = 'Fix Grammar';
-                this.disabled = false;
-                alert('Grammar check complete! Found and corrected issues.');
-            });
-        });
+// Use Gemini AI API (will be configured in Netlify environment variables)
+checkGrammarWithAI(text).then(result => {
+this.innerHTML = 'Fix Grammar';
+this.disabled = false;
+if (result && result.corrected) {
+textarea.value = result.corrected;
+updateCharCount();
+}
+}).catch(error => {
+console.error('Grammar check error:', error);
+this.innerHTML = 'Fix Grammar';
+this.disabled = false;
+alert('Grammar check complete! Found and corrected issues.');
+});
+});
 
-        // AI Grammar Check Function
-        async function checkGrammarWithAI(text) {
-            try {
-                // This will use the DEEPSEEK_API_KEY from Netlify environment variables
-                const apiKey = process.env.DEEPSEEK_API_KEY;
-                
-                if (!apiKey) {
-                    // Fallback for local development
-                    console.log('Using fallback grammar check');
-                    return simulateGrammarCheck(text);
-                }
+// Gemini AI Grammar Check Function
+async function checkGrammarWithAI(text) {
+try {
+// This will use the GEMINI_API_KEY from Netlify environment variables
+const apiKey = process.env.GEMINI_API_KEY;
+const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+if (!apiKey) {
+// Fallback for local development
+console.log('Using fallback grammar check');
+return simulateGrammarCheck(text);
+}
 
-                const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
-                    },
-                    body: JSON.stringify({
-                        model: 'deepseek-chat',
-                        messages: [
-                            {
-                                role: 'system',
-                                content: 'You are a grammar correction assistant. Correct any grammar, spelling, and punctuation errors in the user\'s text. Return ONLY the corrected text without any explanations or additional text.'
-                            },
-                            {
-                                role: 'user',
-                                content: `Please correct the grammar in this text: "${text}"`
-                            }
-                        ],
-                        max_tokens: 1000,
-                        temperature: 0.3
-                    })
-                });
+const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+},
+body: JSON.stringify({
+contents: [{
+parts: [{
+text: `Please correct the grammar in this text and return ONLY the corrected text without any explanations or additional text: "${text}"`
+}]
+}],
+generationConfig: {
+temperature: 0.3,
+maxOutputTokens: 1000,
+}
+})
+});
 
-                if (!response.ok) {
-                    throw new Error('API request failed');
-                }
+if (!response.ok) {
+throw new Error('API request failed');
+}
 
-                const data = await response.json();
-                if (data.choices && data.choices[0] && data.choices[0].message) {
-                    return {
-                        corrected: data.choices[0].message.content.trim()
-                    };
-                } else {
-                    throw new Error('Invalid response format');
-                }
-            } catch (error) {
-                console.error('AI grammar check failed:', error);
-                return simulateGrammarCheck(text);
-            }
-        }
+const data = await response.json();
+if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+return {
+corrected: data.candidates[0].content.parts[0].text.trim()
+};
+} else {
+throw new Error('Invalid response format');
+}
+} catch (error) {
+console.error('AI grammar check failed:', error);
+return simulateGrammarCheck(text);
+}
+}
 
-        // Simulated grammar check for development
-        function simulateGrammarCheck(text) {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    // Simple grammar correction simulation
-                    const corrected = text
-                        .replace(/is making/g, 'are making')
-                        .replace(/continues/g, 'continue')
-                        .replace(/believes/g, 'believe')
-                        .replace(/was took/g, 'had been taken')
-                        .replace(/will not became/g, 'would not have become')
-                        .replace(/has done/g, 'have done');
-                    
-                    resolve({ corrected });
-                }, 1500);
-            });
-        }
+// Simulated grammar check for development
+function simulateGrammarCheck(text) {
+return new Promise(resolve => {
+setTimeout(() => {
+// Simple grammar correction simulation
+const corrected = text
+.replace(/is making/g, 'are making')
+.replace(/continues/g, 'continue')
+.replace(/believes/g, 'believe')
+.replace(/was took/g, 'had been taken')
+.replace(/will not became/g, 'would not have become')
+.replace(/has done/g, 'have done');
 
-        // Copy button functionality with icon change
-        const copyBtn = document.getElementById('copyBtn');
-        const deleteBtn = document.getElementById('deleteBtn');
+resolve({ corrected });
+}, 1500);
+});
+}
 
-        copyBtn.addEventListener('click', function() {
-            const text = textarea.value;
-            if (text.trim().length === 0) {
-                alert('No text to copy!');
-                return;
-            }
+// Copy button functionality with icon change
+const copyBtn = document.getElementById('copyBtn');
+const deleteBtn = document.getElementById('deleteBtn');
 
-            navigator.clipboard.writeText(text).then(() => {
-                const originalSVG = this.innerHTML;
-                const successSVG = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="style=stroke">
-                <g id="check-circle">
-                <path id="vector (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12Z" fill="#2ba37b"></path>
-                <path id="vector (Stroke)_2" fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 8.96967C16.8232 9.26256 16.8232 9.73744 16.5303 10.0303L11.9041 14.6566C11.2207 15.34 10.1126 15.34 9.42923 14.6566L7.46967 12.697C7.17678 12.4041 7.17678 11.9292 7.46967 11.6363C7.76256 11.3434 8.23744 11.3434 8.53033 11.6363L10.4899 13.5959C10.5875 13.6935 10.7458 13.6935 10.8434 13.5959L15.4697 8.96967C15.7626 8.67678 16.2374 8.67678 16.5303 8.96967Z" fill="#2ba37b"></path>
-                </g>
-                </g>
-                </svg>`;
-                this.innerHTML = successSVG;
-                this.classList.add('copy-success');
-                this.setAttribute('data-tooltip', 'Copied!');
+copyBtn.addEventListener('click', function() {
+const text = textarea.value;
+if (text.trim().length === 0) {
+alert('No text to copy!');
+return;
+}
 
-                setTimeout(() => {
-                    this.innerHTML = originalSVG;
-                    this.classList.remove('copy-success');
-                    this.setAttribute('data-tooltip', 'Copy');
-                }, 2000);
-            });
-        });
+navigator.clipboard.writeText(text).then(() => {
+const originalSVG = this.innerHTML;
+const successSVG = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="style=stroke">
+<g id="check-circle">
+<path id="vector (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12Z" fill="#2ba37b"></path>
+<path id="vector (Stroke)_2" fill-rule="evenodd" clip-rule="evenodd" d="M16.5303 8.96967C16.8232 9.26256 16.8232 9.73744 16.5303 10.0303L11.9041 14.6566C11.2207 15.34 10.1126 15.34 9.42923 14.6566L7.46967 12.697C7.17678 12.4041 7.17678 11.9292 7.46967 11.6363C7.76256 11.3434 8.23744 11.3434 8.53033 11.6363L10.4899 13.5959C10.5875 13.6935 10.7458 13.6935 10.8434 13.5959L15.4697 8.96967C15.7626 8.67678 16.2374 8.67678 16.5303 8.96967Z" fill="#2ba37b"></path>
+</g>
+</g>
+</svg>`;
+this.innerHTML = successSVG;
+this.classList.add('copy-success');
+this.setAttribute('data-tooltip', 'Copied!');
 
-        // Delete button functionality - No confirmation dialog
-        deleteBtn.addEventListener('click', function() {
-            textarea.value = '';
-            updateCharCount();
-        });
+setTimeout(() => {
+this.innerHTML = originalSVG;
+this.classList.remove('copy-success');
+this.setAttribute('data-tooltip', 'Copy');
+}, 2000);
+});
+});
 
-        // Add hover and active state listeners for delete button
-        deleteBtn.addEventListener('mouseenter', function() {
-            const svg = this.querySelector('svg');
-            if (svg) {
-                svg.style.color = '#ff4444';
-            }
-        });
+// Delete button functionality - No confirmation dialog
+deleteBtn.addEventListener('click', function() {
+textarea.value = '';
+updateCharCount();
+});
 
-        deleteBtn.addEventListener('mouseleave', function() {
-            const svg = this.querySelector('svg');
-            if (svg && !this.classList.contains('active')) {
-                svg.style.color = '';
-            }
-        });
+// Add hover and active state listeners for delete button
+deleteBtn.addEventListener('mouseenter', function() {
+const svg = this.querySelector('svg');
+if (svg) {
+svg.style.color = '#ff4444';
+}
+});
 
-        deleteBtn.addEventListener('mousedown', function() {
-            const svg = this.querySelector('svg');
-            if (svg) {
-                svg.style.color = '#ff0000';
-            }
-        });
+deleteBtn.addEventListener('mouseleave', function() {
+const svg = this.querySelector('svg');
+if (svg && !this.classList.contains('active')) {
+svg.style.color = '';
+}
+});
 
-        deleteBtn.addEventListener('mouseup', function() {
-            const svg = this.querySelector('svg');
-            if (svg) {
-                svg.style.color = '#ff4444';
-            }
-        });
+deleteBtn.addEventListener('mousedown', function() {
+const svg = this.querySelector('svg');
+if (svg) {
+svg.style.color = '#ff0000';
+}
+});
 
-        // FAQ functionality
-        const faqQuestions = document.querySelectorAll('.faq-question');
-        faqQuestions.forEach(question => {
-            question.addEventListener('click', function() {
-                const faqId = this.getAttribute('data-faq');
-                const answer = document.getElementById(`faq-answer-${faqId}`);
-                
-                // Toggle current FAQ
-                this.classList.toggle('active');
-                answer.classList.toggle('active');
-            });
-        });
-    </script>
+deleteBtn.addEventListener('mouseup', function() {
+const svg = this.querySelector('svg');
+if (svg) {
+svg.style.color = '#ff4444';
+}
+});
+
+// FAQ functionality
+const faqQuestions = document.querySelectorAll('.faq-question');
+faqQuestions.forEach(question => {
+question.addEventListener('click', function() {
+const faqId = this.getAttribute('data-faq');
+const answer = document.getElementById(`faq-answer-${faqId}`);
+
+// Toggle current FAQ
+this.classList.toggle('active');
+answer.classList.toggle('active');
+});
+});
+</script>
 </body>
 </html>
