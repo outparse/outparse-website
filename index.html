@@ -11,7 +11,7 @@
 --primary-color: #2ba37b;
 --hero-gradient-start: #f2fcda;
 --hero-gradient-end: #e2fbec;
---footer-bg: #f5f5f7;
+--footer-bg: #ffffff;
 --text-dark: #333;
 --text-light: #666;
 --white: #ffffff;
@@ -21,7 +21,8 @@
 --delete-red-hover: #ff0000;
 --link-blue: #2563eb;
 --faq-bg: #f9fafb;
---error-highlight: #ffebee;
+--error-highlight: #fff5f5;
+--error-border: #ff4444;
 --error-text: #d32f2f;
 }
 
@@ -193,7 +194,7 @@ transform: translateY(-2px);
 box-shadow: 0 4px 12px rgba(43, 163, 123, 0.3);
 }
 
-/* Mobile Menu */
+/* Mobile Menu Button */
 .mobile-menu-btn {
 display: none;
 background: none;
@@ -202,12 +203,42 @@ cursor: pointer;
 color: var(--text-dark);
 width: 32px;
 height: 32px;
+position: relative;
 }
 
-.mobile-menu-btn svg {
+.mobile-menu-btn .line {
+position: absolute;
+height: 2px;
 width: 100%;
-height: 100%;
-stroke: var(--text-dark);
+background-color: var(--text-dark);
+left: 0;
+transition: all 0.3s ease;
+}
+
+.mobile-menu-btn .line:nth-child(1) {
+top: 8px;
+}
+
+.mobile-menu-btn .line:nth-child(2) {
+top: 16px;
+}
+
+.mobile-menu-btn .line:nth-child(3) {
+top: 24px;
+}
+
+.mobile-menu-btn.active .line:nth-child(1) {
+transform: rotate(45deg);
+top: 16px;
+}
+
+.mobile-menu-btn.active .line:nth-child(2) {
+opacity: 0;
+}
+
+.mobile-menu-btn.active .line:nth-child(3) {
+transform: rotate(-45deg);
+top: 16px;
 }
 
 .mobile-menu {
@@ -409,7 +440,7 @@ resize: none;
 overflow-y: auto;
 }
 
-.editor-textarea.error-highlight {
+.editor-textarea.error-mode {
 background-color: var(--error-highlight);
 }
 
@@ -476,19 +507,33 @@ width: 20px;
 height: 20px;
 }
 
+/* Error highlighting */
+.error-word {
+position: relative;
+background-color: var(--error-highlight);
+border-bottom: 2px solid var(--error-border);
+cursor: pointer;
+padding: 0 2px;
+margin: 0 1px;
+display: inline;
+}
+
+.error-word:hover {
+background-color: #ffdddd;
+}
+
 /* Error Review Box */
 .error-review-box {
-position: absolute;
-top: 60px;
-right: 20px;
-width: 300px;
+position: fixed;
 background-color: var(--white);
-border-radius: 12px;
-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-padding: 20px;
-z-index: 10;
+border-radius: 8px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+padding: 15px;
+z-index: 1000;
 border: 1px solid var(--border-color);
 display: none;
+min-width: 250px;
+max-width: 300px;
 }
 
 .error-review-box.active {
@@ -499,13 +544,13 @@ display: block;
 display: flex;
 justify-content: space-between;
 align-items: center;
-margin-bottom: 15px;
+margin-bottom: 12px;
 padding-bottom: 10px;
 border-bottom: 1px solid var(--border-color);
 }
 
 .error-review-header h3 {
-font-size: 1.1rem;
+font-size: 1rem;
 font-weight: 600;
 color: var(--text-dark);
 }
@@ -515,7 +560,13 @@ background: none;
 border: none;
 color: var(--text-light);
 cursor: pointer;
-font-size: 1rem;
+font-size: 1.2rem;
+padding: 0;
+width: 24px;
+height: 24px;
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
 .error-review-content {
@@ -524,7 +575,7 @@ margin-bottom: 15px;
 
 .error-review-content p {
 color: var(--text-light);
-font-size: 0.95rem;
+font-size: 0.9rem;
 line-height: 1.5;
 margin-bottom: 10px;
 }
@@ -540,7 +591,7 @@ border-radius: 50px;
 font-weight: 600;
 cursor: pointer;
 font-family: 'Arimo', sans-serif;
-font-size: 0.9rem;
+font-size: 0.85rem;
 border: 1px solid var(--border-color);
 background-color: var(--white);
 color: var(--text-dark);
@@ -644,6 +695,7 @@ line-height: 1.6;
 footer {
 background-color: var(--footer-bg);
 padding: 60px 20px 30px;
+border-top: 1px solid var(--border-color);
 }
 
 .footer-container {
@@ -653,7 +705,7 @@ margin: 0 auto;
 
 .footer-columns {
 display: grid;
-grid-template-columns: repeat(4, 1fr);
+grid-template-columns: 2fr 1fr 1fr 1fr;
 gap: 40px;
 margin-bottom: 40px;
 }
@@ -914,24 +966,16 @@ Features <i class="fas fa-chevron-down"></i>
 <button class="btn btn-primary">Create account</button>
 </div>
 
-<!-- Mobile Menu Button -->
+<!-- Mobile Menu Button with 3 thin black lines -->
 <button class="mobile-menu-btn" id="mobileMenuBtn">
-<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#000000">
-<line x1="16" y1="32" x2="48" y2="32"></line>
-<line x1="16" y1="20" x2="48" y2="20"></line>
-<line x1="16" y1="44" x2="48" y2="44"></line>
-</svg>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"></span>
 </button>
 </div>
 
 <!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
-<button class="mobile-menu-btn" id="closeMenuBtn" style="position: absolute; top: 20px; right: 20px;">
-<svg viewBox="0 0 512 512" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<line style="fill:none;stroke:#000000;stroke-width:13.4167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.6131;" x1="486.21" x2="26.739" y1="26.814" y2="486.139"></line>
-<line style="fill:none;stroke:#000000;stroke-width:13.4167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.6131;" x1="486.21" x2="26.739" y1="486.139" y2="26.814"></line>
-</svg>
-</button>
 <ul class="mobile-nav-links">
 <li><a href="#">Grammar Checker</a></li>
 <li><a href="#">Quiz</a></li>
@@ -977,7 +1021,7 @@ Features <i class="fas fa-chevron-down"></i>
 </div>
 <button class="editor-menu-btn"><i class="fas fa-ellipsis-v"></i></button>
 </div>
-<div class="editor-textarea-container">
+<div class="editor-textarea-container" id="editorTextareaContainer">
 <textarea class="editor-textarea" placeholder="Start typing or paste text here..." id="editorTextarea"></textarea>
 <div class="editor-center-actions" id="centerActions">
 <button class="center-action-btn" id="trySampleBtn">
@@ -1008,7 +1052,7 @@ Upload document
 <button class="error-review-close" id="closeErrorReview">×</button>
 </div>
 <div class="error-review-content">
-<p id="errorReviewText">The verb "is" should be changed to "are" to agree with the plural subject "countries".</p>
+<p id="errorReviewText"></p>
 </div>
 <div class="error-review-actions">
 <button class="error-review-btn accept" id="acceptSuggestion">Accept</button>
@@ -1074,7 +1118,7 @@ Upload document
 <footer>
 <div class="footer-container">
 <div class="footer-columns">
-<!-- Newsletter Column -->
+<!-- Newsletter Column - Takes more width -->
 <div class="footer-column">
 <h3>Newsletter <button class="mobile-toggle"><i class="fas fa-chevron-down"></i></button></h3>
 <ul>
@@ -1147,17 +1191,13 @@ Upload document
 <script>
 // Mobile menu toggle
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-const closeMenuBtn = document.getElementById('closeMenuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 const mobileDropdownToggle = document.querySelector('.mobile-dropdown-toggle');
 const mobileDropdown = document.getElementById('mobileDropdown');
 
 mobileMenuBtn.addEventListener('click', () => {
-mobileMenu.classList.add('active');
-});
-
-closeMenuBtn.addEventListener('click', () => {
-mobileMenu.classList.remove('active');
+mobileMenuBtn.classList.toggle('active');
+mobileMenu.classList.toggle('active');
 });
 
 // Mobile dropdown toggle
@@ -1184,6 +1224,7 @@ document.getElementById('currentYear').textContent = new Date().getFullYear();
 
 // Editor elements
 const textarea = document.getElementById('editorTextarea');
+const textareaContainer = document.getElementById('editorTextareaContainer');
 const charCount = document.getElementById('charCount');
 const centerActions = document.getElementById('centerActions');
 const trySampleBtn = document.getElementById('trySampleBtn');
@@ -1194,6 +1235,11 @@ const closeErrorReview = document.getElementById('closeErrorReview');
 const acceptSuggestion = document.getElementById('acceptSuggestion');
 const ignoreSuggestion = document.getElementById('ignoreSuggestion');
 const errorReviewText = document.getElementById('errorReviewText');
+
+// Current error tracking
+let currentError = null;
+let currentErrorElement = null;
+let errors = [];
 
 // Character count for textarea
 function updateCharCount() {
@@ -1239,33 +1285,31 @@ return;
 this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
 this.disabled = true;
 
-// Use Gemini AI API - will use GEMINI_API_KEY from Netlify environment variables
+// Clean up any previous error highlighting
+cleanupErrorHighlighting();
+
+// Use Gemini AI API
 checkGrammarWithAI(text).then(result => {
 this.innerHTML = 'Fix Grammar';
 this.disabled = false;
 if (result && result.errors && result.errors.length > 0) {
+errors = result.errors;
 // Highlight errors and show first suggestion
-highlightErrors(result.errors);
-showErrorSuggestion(result.errors[0]);
+highlightErrors(errors);
+if (errors.length > 0) {
+showErrorSuggestion(errors[0], null);
+}
 } else if (result && result.corrected) {
+// If AI returns corrected text directly
 textarea.value = result.corrected;
 updateCharCount();
+alert('No grammar errors found! Your text is already well-written.');
 }
 }).catch(error => {
 console.error('Grammar check error:', error);
 this.innerHTML = 'Fix Grammar';
 this.disabled = false;
-// Show demo error highlighting for development
-const demoErrors = [
-{ text: 'is', suggestion: 'are', reason: 'Subject-verb agreement: "countries" is plural so it should be "are making"' },
-{ text: 'continues', suggestion: 'continue', reason: 'Subject-verb agreement: "others" is plural so it should be "continue"' },
-{ text: 'believes', suggestion: 'believe', reason: 'Subject-verb agreement: "scientists" is plural so it should be "believe"' },
-{ text: 'was took', suggestion: 'had been taken', reason: 'Verb tense: Should be past perfect "had been taken" to show action before another past action' },
-{ text: 'will not became', suggestion: 'would not have become', reason: 'Conditional tense: Should be "would not have become" in a hypothetical past condition' },
-{ text: 'has done', suggestion: 'have done', reason: 'Subject-verb agreement: "governments" is plural so it should be "have done"' }
-];
-highlightErrors(demoErrors);
-showErrorSuggestion(demoErrors[0]);
+alert('Failed to check grammar. Please try again.');
 });
 });
 
@@ -1276,10 +1320,21 @@ try {
 const apiKey = process.env.GEMINI_API_KEY;
 const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
 if (!apiKey) {
-// Fallback for local development - return simulated errors
-console.log('Using simulated grammar check');
-return simulateGrammarCheck(text);
+// For demo purposes, return no errors to show AI-only behavior
+return { errors: [], original: text };
 }
+
+// More detailed prompt for better grammar analysis
+const prompt = `Analyze the following text for grammar, spelling, punctuation, and style errors. 
+For each error found, return a JSON object with these fields:
+1. "original": the exact text of the error
+2. "suggestion": the corrected text
+3. "reason": explanation of the error and correction
+4. "position": the character index where the error starts
+
+Text to analyze: "${text}"
+
+Return ONLY a valid JSON array of error objects. If no errors found, return empty array.`;
 
 const response = await fetch(`${apiUrl}?key=${apiKey}`, {
 method: 'POST',
@@ -1289,12 +1344,12 @@ headers: {
 body: JSON.stringify({
 contents: [{
 parts: [{
-text: `Analyze this text for grammar errors and return JSON with errors array containing objects with: original text, suggested correction, and explanation. Text: "${text}"`
+text: prompt
 }]
 }],
 generationConfig: {
-temperature: 0.3,
-maxOutputTokens: 1000,
+temperature: 0.2,
+maxOutputTokens: 2000,
 }
 })
 });
@@ -1307,155 +1362,233 @@ const data = await response.json();
 if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
 const resultText = data.candidates[0].content.parts[0].text.trim();
 try {
-return JSON.parse(resultText);
+const parsed = JSON.parse(resultText);
+parsed.original = text;
+return parsed;
 } catch (e) {
 console.error('Failed to parse AI response:', e);
-return simulateGrammarCheck(text);
+// If parsing fails, return empty errors
+return { errors: [], original: text };
 }
 } else {
 throw new Error('Invalid response format');
 }
 } catch (error) {
 console.error('AI grammar check failed:', error);
-return simulateGrammarCheck(text);
+// Return empty errors on failure
+return { errors: [], original: text };
 }
 }
 
-// Simulated grammar check for development
-function simulateGrammarCheck(text) {
-return new Promise(resolve => {
-setTimeout(() => {
-const errors = [
-{ text: 'is', suggestion: 'are', reason: 'Subject-verb agreement: "countries" is plural so it should be "are making"' },
-{ text: 'continues', suggestion: 'continue', reason: 'Subject-verb agreement: "others" is plural so it should be "continue"' },
-{ text: 'believes', suggestion: 'believe', reason: 'Subject-verb agreement: "scientists" is plural so it should be "believe"' },
-{ text: 'was took', suggestion: 'had been taken', reason: 'Verb tense: Should be past perfect "had been taken" to show action before another past action' },
-{ text: 'will not became', suggestion: 'would not have become', reason: 'Conditional tense: Should be "would not have become" in a hypothetical past condition' },
-{ text: 'has done', suggestion: 'have done', reason: 'Subject-verb agreement: "governments" is plural so it should be "have done"' }
-];
-resolve({ errors, original: text });
-}, 1500);
+// Clean up previous error highlighting
+function cleanupErrorHighlighting() {
+// Remove any existing error highlighting
+const errorWords = textareaContainer.querySelectorAll('.error-word');
+errorWords.forEach(word => {
+const parent = word.parentNode;
+const textNode = document.createTextNode(word.textContent);
+parent.replaceChild(textNode, word);
+parent.normalize();
 });
+
+// Remove any contenteditable div
+const contentEditableDiv = textareaContainer.querySelector('div[contenteditable="true"]');
+if (contentEditableDiv) {
+contentEditableDiv.remove();
+}
+
+// Show the original textarea
+textarea.style.display = 'block';
+textarea.classList.remove('error-mode');
 }
 
 // Highlight errors in text
 function highlightErrors(errors) {
-const text = textarea.value;
-let highlightedText = text;
-let offset = 0;
-const errorPositions = [];
-
-// Find positions of errors
-errors.forEach(error => {
-const index = highlightedText.indexOf(error.text);
-if (index !== -1) {
-errorPositions.push({
-start: index,
-end: index + error.text.length,
-error: error
-});
+if (errors.length === 0) {
+alert('No grammar errors found! Your text is already well-written.');
+return;
 }
+
+// Add error mode class to textarea
+textarea.classList.add('error-mode');
+
+const originalText = textarea.value;
+let htmlText = originalText;
+
+// Create error highlights - process from end to beginning to avoid position issues
+errors.sort((a, b) => b.position - a.position);
+
+errors.forEach((error, index) => {
+const start = error.position;
+const end = start + error.original.length;
+const before = htmlText.substring(0, start);
+const errorText = htmlText.substring(start, end);
+const after = htmlText.substring(end);
+htmlText = before + `<span class="error-word" data-error-index="${index}">${errorText}</span>` + after;
 });
 
-// Sort by position to handle replacements correctly
-errorPositions.sort((a, b) => a.start - b.start);
-
-// Apply highlighting spans
-let result = text;
-errorPositions.forEach((pos, i) => {
-const before = result.substring(0, pos.start);
-const errorText = result.substring(pos.start, pos.end);
-const after = result.substring(pos.end);
-result = before + `<span class="error-highlight" data-error-index="${i}">${errorText}</span>` + after;
-});
-
-// Store errors for reference
-textarea.dataset.errors = JSON.stringify(errors);
-textarea.dataset.errorPositions = JSON.stringify(errorPositions);
-
-// Create a temporary div to handle HTML
-const tempDiv = document.createElement('div');
-tempDiv.innerHTML = result;
-
-// Replace textarea with contenteditable div for highlighting
-const textareaContainer = textarea.parentElement;
+// Create contenteditable div for error highlighting
 const contentEditableDiv = document.createElement('div');
 contentEditableDiv.className = 'editor-textarea';
 contentEditableDiv.contentEditable = true;
-contentEditableDiv.innerHTML = result;
-contentEditableDiv.style.backgroundColor = 'var(--error-highlight)';
+contentEditableDiv.innerHTML = htmlText;
 
-// Hide original textarea
+// Hide original textarea and show contenteditable div
 textarea.style.display = 'none';
 textareaContainer.appendChild(contentEditableDiv);
 
-// Add click handler to error highlights
+// Add click handlers to error words
 contentEditableDiv.addEventListener('click', function(e) {
-const errorSpan = e.target.closest('.error-highlight');
-if (errorSpan) {
-const errorIndex = parseInt(errorSpan.dataset.errorIndex);
-if (errorPositions[errorIndex]) {
-showErrorSuggestion(errorPositions[errorIndex].error);
+const errorWord = e.target.closest('.error-word');
+if (errorWord) {
+const errorIndex = parseInt(errorWord.dataset.errorIndex);
+if (errors[errorIndex]) {
+showErrorSuggestion(errors[errorIndex], errorWord);
 }
 }
 });
+
+// Update textarea value when contenteditable changes
+contentEditableDiv.addEventListener('input', function() {
+textarea.value = this.innerText;
+updateCharCount();
+});
 }
 
-// Show error suggestion box
-function showErrorSuggestion(error) {
-errorReviewText.textContent = error.reason;
-errorReviewBox.classList.add('active');
+// Show error suggestion box with correct positioning
+function showErrorSuggestion(error, errorElement) {
 currentError = error;
+currentErrorElement = errorElement;
+errorReviewText.textContent = error.reason;
+
+// Position the error review box
+if (errorElement) {
+const rect = errorElement.getBoundingClientRect();
+const editorCard = document.querySelector('.editor-card');
+const cardRect = editorCard.getBoundingClientRect();
+const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+// Calculate position relative to viewport
+const viewportHeight = window.innerHeight;
+const viewportWidth = window.innerWidth;
+
+// Position below the error word
+let top = rect.bottom + scrollTop + 5;
+let left = rect.left + scrollLeft;
+
+// Adjust if it would go off the bottom of the viewport
+if (top + 150 > viewportHeight + scrollTop) {
+top = rect.top + scrollTop - 150; // Position above instead
+}
+
+// Adjust if it would go off the right of the viewport
+if (left + 300 > viewportWidth + scrollLeft) {
+left = viewportWidth + scrollLeft - 320; // Keep within viewport
+}
+
+// Ensure it stays within editor card horizontally
+if (left < cardRect.left + scrollLeft) {
+left = cardRect.left + scrollLeft;
+}
+
+errorReviewBox.style.top = top + 'px';
+errorReviewBox.style.left = left + 'px';
+} else {
+// Center in editor card if no specific element
+const editorCard = document.querySelector('.editor-card');
+const cardRect = editorCard.getBoundingClientRect();
+const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+errorReviewBox.style.top = (cardRect.top + scrollTop + 100) + 'px';
+errorReviewBox.style.left = (cardRect.left + scrollLeft + 50) + 'px';
+}
+
+errorReviewBox.classList.add('active');
 }
 
 // Close error review box
 closeErrorReview.addEventListener('click', function() {
 errorReviewBox.classList.remove('active');
+currentError = null;
+currentErrorElement = null;
 });
 
 // Accept suggestion
 acceptSuggestion.addEventListener('click', function() {
-if (currentError) {
-// In a real implementation, this would replace the error text
-const contentEditableDiv = document.querySelector('.editor-textarea[contenteditable="true"]');
+if (currentError && currentErrorElement) {
+// Replace the error word with the suggestion
+const suggestion = currentError.suggestion;
+const range = document.createRange();
+const selection = window.getSelection();
+range.selectNodeContents(currentErrorElement);
+selection.removeAllRanges();
+selection.addRange(range);
+
+// Replace with suggestion
+document.execCommand('insertText', false, suggestion);
+
+// Update the original textarea value
+const contentEditableDiv = textareaContainer.querySelector('div[contenteditable="true"]');
 if (contentEditableDiv) {
-let html = contentEditableDiv.innerHTML;
-const errorSpans = contentEditableDiv.querySelectorAll('.error-highlight');
-errorSpans.forEach(span => {
-const errorIndex = parseInt(span.dataset.errorIndex);
-if (errorIndex === 0) { // For demo, only replace first error
-const errors = JSON.parse(textarea.dataset.errors || '[]');
-if (errors[errorIndex]) {
-const error = errors[errorIndex];
-span.outerHTML = error.suggestion;
-}
-}
-});
-// Update the actual textarea value
 textarea.value = contentEditableDiv.innerText;
 updateCharCount();
 }
+
+// Remove this error from the errors array
+const errorIndex = parseInt(currentErrorElement.dataset.errorIndex);
+errors.splice(errorIndex, 1);
+
+// Update error indices for remaining errors
+const errorWords = textareaContainer.querySelectorAll('.error-word');
+errorWords.forEach((word, index) => {
+word.dataset.errorIndex = index;
+});
+
+// Close the review box
 errorReviewBox.classList.remove('active');
+currentError = null;
+currentErrorElement = null;
+
+// If no errors left, revert to normal textarea
+if (errors.length === 0) {
+cleanupErrorHighlighting();
+}
 }
 });
 
 // Ignore suggestion
 ignoreSuggestion.addEventListener('click', function() {
+if (currentErrorElement) {
+// Just remove the highlighting for this specific error
+currentErrorElement.classList.remove('error-word');
+currentErrorElement.style.borderBottom = 'none';
+currentErrorElement.style.backgroundColor = 'transparent';
+}
+
 errorReviewBox.classList.remove('active');
+currentError = null;
+currentErrorElement = null;
 });
 
 // Copy button functionality with icon change
 const copyBtn = document.getElementById('copyBtn');
-const deleteBtn = document.getElementById('deleteBtn');
 
 copyBtn.addEventListener('click', function() {
-const text = textarea.value;
-if (text.trim().length === 0) {
+let textToCopy = textarea.value;
+// If we're in error mode, get text from contenteditable div
+const contentEditableDiv = textareaContainer.querySelector('div[contenteditable="true"]');
+if (contentEditableDiv) {
+textToCopy = contentEditableDiv.innerText;
+}
+
+if (textToCopy.trim().length === 0) {
 alert('No text to copy!');
 return;
 }
 
-navigator.clipboard.writeText(text).then(() => {
+navigator.clipboard.writeText(textToCopy).then(() => {
 const originalSVG = this.innerHTML;
 const successSVG = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="style=stroke">
@@ -1479,15 +1612,13 @@ this.setAttribute('data-tooltip', 'Copy');
 
 // Delete button functionality - No confirmation dialog
 deleteBtn.addEventListener('click', function() {
+cleanupErrorHighlighting();
 textarea.value = '';
 updateCharCount();
-// Also clear any contenteditable div
-const contentEditableDiv = document.querySelector('.editor-textarea[contenteditable="true"]');
-if (contentEditableDiv) {
-contentEditableDiv.remove();
-textarea.style.display = 'block';
-}
 errorReviewBox.classList.remove('active');
+currentError = null;
+currentErrorElement = null;
+errors = [];
 });
 
 // Add hover and active state listeners for delete button
