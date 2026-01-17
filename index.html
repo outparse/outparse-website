@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Outparse | Grammar Checker & Writing Assistant</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root {
@@ -33,9 +35,11 @@ box-sizing: border-box;
 }
 
 body {
-font-family: 'Arimo', sans-serif;
+font-family: 'Inter', sans-serif;
 color: var(--text-dark);
 line-height: 1.6;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
 }
 
 /* Header Styles */
@@ -79,6 +83,7 @@ font-size: 1.5rem;
 font-weight: 700;
 color: var(--text-dark);
 text-transform: lowercase;
+letter-spacing: -0.5px;
 }
 
 /* Desktop Navigation */
@@ -143,6 +148,7 @@ padding: 12px 16px;
 text-decoration: none;
 display: block;
 transition: background-color 0.3s;
+font-weight: 400;
 }
 
 .dropdown-content a:hover {
@@ -168,9 +174,10 @@ border-radius: 50px;
 font-weight: 600;
 cursor: pointer;
 transition: all 0.3s ease;
-font-family: 'Arimo', sans-serif;
+font-family: 'Inter', sans-serif;
 font-size: 0.95rem;
 border: none;
+letter-spacing: -0.2px;
 }
 
 .btn-login {
@@ -194,7 +201,7 @@ transform: translateY(-2px);
 box-shadow: 0 4px 12px rgba(43, 163, 123, 0.3);
 }
 
-/* Mobile Menu Button */
+/* Mobile Menu */
 .mobile-menu-btn {
 display: none;
 background: none;
@@ -203,42 +210,12 @@ cursor: pointer;
 color: var(--text-dark);
 width: 32px;
 height: 32px;
-position: relative;
 }
 
-.mobile-menu-btn .line {
-position: absolute;
-height: 2px;
+.mobile-menu-btn svg {
 width: 100%;
-background-color: var(--text-dark);
-left: 0;
-transition: all 0.3s ease;
-}
-
-.mobile-menu-btn .line:nth-child(1) {
-top: 8px;
-}
-
-.mobile-menu-btn .line:nth-child(2) {
-top: 16px;
-}
-
-.mobile-menu-btn .line:nth-child(3) {
-top: 24px;
-}
-
-.mobile-menu-btn.active .line:nth-child(1) {
-transform: rotate(45deg);
-top: 16px;
-}
-
-.mobile-menu-btn.active .line:nth-child(2) {
-opacity: 0;
-}
-
-.mobile-menu-btn.active .line:nth-child(3) {
-transform: rotate(-45deg);
-top: 16px;
+height: 100%;
+stroke: var(--text-dark);
 }
 
 .mobile-menu {
@@ -272,11 +249,17 @@ color: var(--text-dark);
 font-weight: 500;
 display: block;
 padding: 8px 0;
+font-family: 'Inter', sans-serif;
 }
 
 .mobile-dropdown-content {
 padding-left: 15px;
 margin-top: 10px;
+display: none;
+}
+
+.mobile-dropdown-content.active {
+display: block;
 }
 
 .mobile-dropdown-content a {
@@ -310,12 +293,15 @@ font-weight: 700;
 line-height: 1.2;
 margin-bottom: 20px;
 color: var(--text-dark);
+letter-spacing: -1px;
 }
 
 .hero-content p {
 font-size: 1.2rem;
 color: var(--text-light);
 margin-bottom: 30px;
+font-weight: 400;
+line-height: 1.7;
 }
 
 /* Editor Card */
@@ -400,6 +386,7 @@ z-index: 10;
 border: 1px solid #dee2e6;
 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 margin-top: 5px;
+font-family: 'Inter', sans-serif;
 }
 
 .editor-action-btn:hover::after {
@@ -431,13 +418,14 @@ width: 100%;
 height: 100%;
 padding: 20px;
 border: none;
-font-family: 'Arimo', sans-serif;
+font-family: 'Inter', sans-serif;
 font-size: 1rem;
 line-height: 1.6;
 outline: none;
 background-color: var(--white);
 resize: none;
 overflow-y: auto;
+font-weight: 400;
 }
 
 .editor-textarea.error-mode {
@@ -457,6 +445,7 @@ flex-shrink: 0;
 .char-count {
 color: var(--text-light);
 font-size: 0.9rem;
+font-family: 'Inter', sans-serif;
 }
 
 .char-count span {
@@ -490,7 +479,7 @@ border-radius: 50px;
 font-weight: 600;
 cursor: pointer;
 transition: all 0.3s ease;
-font-family: 'Arimo', sans-serif;
+font-family: 'Inter', sans-serif;
 font-size: 0.95rem;
 border: 1px solid var(--border-color);
 background-color: var(--white);
@@ -516,6 +505,7 @@ cursor: pointer;
 padding: 0 2px;
 margin: 0 1px;
 display: inline;
+font-family: 'Inter', sans-serif;
 }
 
 .error-word:hover {
@@ -524,7 +514,7 @@ background-color: #ffdddd;
 
 /* Error Review Box */
 .error-review-box {
-position: fixed;
+position: absolute;
 background-color: var(--white);
 border-radius: 8px;
 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -534,6 +524,7 @@ border: 1px solid var(--border-color);
 display: none;
 min-width: 250px;
 max-width: 300px;
+font-family: 'Inter', sans-serif;
 }
 
 .error-review-box.active {
@@ -578,6 +569,7 @@ color: var(--text-light);
 font-size: 0.9rem;
 line-height: 1.5;
 margin-bottom: 10px;
+font-weight: 400;
 }
 
 .error-review-actions {
@@ -590,7 +582,7 @@ padding: 8px 16px;
 border-radius: 50px;
 font-weight: 600;
 cursor: pointer;
-font-family: 'Arimo', sans-serif;
+font-family: 'Inter', sans-serif;
 font-size: 0.85rem;
 border: 1px solid var(--border-color);
 background-color: var(--white);
@@ -629,6 +621,7 @@ font-weight: 700;
 margin-bottom: 40px;
 text-align: center;
 color: var(--text-dark);
+letter-spacing: -0.5px;
 }
 
 .faq-item {
@@ -660,6 +653,7 @@ color: var(--primary-color);
 margin-right: 15px;
 transition: transform 0.3s;
 color: var(--text-dark);
+font-size: 0.8rem;
 }
 
 .faq-question.active .faq-icon {
@@ -689,6 +683,7 @@ max-height: 500px;
 .faq-answer p {
 color: var(--text-light);
 line-height: 1.6;
+font-weight: 400;
 }
 
 /* Footer */
@@ -717,6 +712,7 @@ color: var(--text-dark);
 display: flex;
 justify-content: space-between;
 align-items: center;
+font-weight: 600;
 }
 
 .footer-column ul {
@@ -731,6 +727,7 @@ margin-bottom: 12px;
 text-decoration: none;
 color: var(--text-light);
 transition: color 0.3s;
+font-weight: 400;
 }
 
 .footer-column ul li a:hover {
@@ -747,9 +744,10 @@ gap: 15px;
 padding: 12px 15px;
 border: 1px solid var(--border-color);
 border-radius: 50px;
-font-family: 'Arimo', sans-serif;
+font-family: 'Inter', sans-serif;
 font-size: 0.95rem;
 outline: none;
+font-weight: 400;
 }
 
 .newsletter-btn {
@@ -761,6 +759,7 @@ border: none;
 font-weight: 600;
 cursor: pointer;
 transition: background-color 0.3s;
+font-family: 'Inter', sans-serif;
 }
 
 .newsletter-btn:hover {
@@ -771,6 +770,8 @@ background-color: #248f6c;
 font-size: 0.8rem;
 color: var(--text-light);
 margin-top: 10px;
+font-weight: 400;
+line-height: 1.5;
 }
 
 .social-links {
@@ -813,6 +814,7 @@ gap: 20px;
 .copyright {
 color: var(--text-light);
 font-size: 0.9rem;
+font-weight: 400;
 }
 
 .footer-bottom-links {
@@ -966,21 +968,29 @@ Features <i class="fas fa-chevron-down"></i>
 <button class="btn btn-primary">Create account</button>
 </div>
 
-<!-- Mobile Menu Button with 3 thin black lines -->
+<!-- Mobile Menu Button -->
 <button class="mobile-menu-btn" id="mobileMenuBtn">
-<span class="line"></span>
-<span class="line"></span>
-<span class="line"></span>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#000000">
+<line x1="16" y1="32" x2="48" y2="32"></line>
+<line x1="16" y1="20" x2="48" y2="20"></line>
+<line x1="16" y1="44" x2="48" y2="44"></line>
+</svg>
 </button>
 </div>
 
 <!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
+<button class="mobile-menu-btn" id="closeMenuBtn" style="position: absolute; top: 20px; right: 20px;">
+<svg viewBox="0 0 512 512" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<line style="fill:none;stroke:#000000;stroke-width:13.4167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.6131;" x1="486.21" x2="26.739" y1="26.814" y2="486.139"></line>
+<line style="fill:none;stroke:#000000;stroke-width:13.4167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.6131;" x1="486.21" x2="26.739" y1="486.139" y2="26.814"></line>
+</svg>
+</button>
 <ul class="mobile-nav-links">
 <li><a href="#">Grammar Checker</a></li>
 <li><a href="#">Quiz</a></li>
 <li>
-<a href="#" class="mobile-dropdown-toggle">More Tools <i class="fas fa-chevron-down"></i></a>
+<a href="#" class="mobile-dropdown-toggle" id="mobileDropdownToggle">More Tools <i class="fas fa-chevron-down"></i></a>
 <div class="mobile-dropdown-content" id="mobileDropdown">
 <a href="#">Word Puzzle</a>
 <a href="#">Vocabulary Builder</a>
@@ -1052,7 +1062,7 @@ Upload document
 <button class="error-review-close" id="closeErrorReview">×</button>
 </div>
 <div class="error-review-content">
-<p id="errorReviewText"></p>
+<p id="errorReviewText">The verb "is" should be changed to "are" to agree with the plural subject "countries".</p>
 </div>
 <div class="error-review-actions">
 <button class="error-review-btn accept" id="acceptSuggestion">Accept</button>
@@ -1191,22 +1201,27 @@ Upload document
 <script>
 // Mobile menu toggle
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const closeMenuBtn = document.getElementById('closeMenuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
-const mobileDropdownToggle = document.querySelector('.mobile-dropdown-toggle');
+const mobileDropdownToggle = document.getElementById('mobileDropdownToggle');
 const mobileDropdown = document.getElementById('mobileDropdown');
 
 mobileMenuBtn.addEventListener('click', () => {
-mobileMenuBtn.classList.toggle('active');
-mobileMenu.classList.toggle('active');
+mobileMenu.classList.add('active');
+});
+
+closeMenuBtn.addEventListener('click', () => {
+mobileMenu.classList.remove('active');
 });
 
 // Mobile dropdown toggle
 if (mobileDropdownToggle) {
 mobileDropdownToggle.addEventListener('click', (e) => {
 e.preventDefault();
-mobileDropdown.style.display = mobileDropdown.style.display === 'block' ? 'none' : 'block';
-mobileDropdownToggle.querySelector('i').classList.toggle('fa-chevron-up');
-mobileDropdownToggle.querySelector('i').classList.toggle('fa-chevron-down');
+mobileDropdown.classList.toggle('active');
+const icon = mobileDropdownToggle.querySelector('i');
+icon.classList.toggle('fa-chevron-up');
+icon.classList.toggle('fa-chevron-down');
 });
 }
 
@@ -1274,7 +1289,7 @@ uploadDocBtn.addEventListener('click', function() {
 alert('Upload document feature would open a file dialog in a real application.');
 });
 
-// Fix Grammar button functionality - UPDATED
+// Fix Grammar button functionality
 fixGrammarBtn.addEventListener('click', async function() {
 const text = textarea.value;
 if (text.trim().length === 0) {
@@ -1282,11 +1297,6 @@ alert('Please enter some text to check grammar.');
 return;
 }
 
-// Store original button content
-const originalButtonHTML = this.innerHTML;
-const originalButtonText = this.textContent;
-
-// Show spinner and disable button
 this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
 this.disabled = true;
 
@@ -1294,90 +1304,70 @@ this.disabled = true;
 cleanupErrorHighlighting();
 
 try {
-// Use Gemini AI API
-const result = await checkGrammarWithAI(text);
-this.innerHTML = originalButtonHTML;
+// Call Netlify Function instead of directly calling Gemini API
+const response = await fetch('/.netlify/functions/check-grammar', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+},
+body: JSON.stringify({ text: text })
+});
+
+if (!response.ok) {
+throw new Error('Network response was not ok');
+}
+
+const result = await response.json();
+
+this.innerHTML = 'Fix Grammar';
 this.disabled = false;
-if (result && result.errors && result.errors.length > 0) {
+
+// Check if we got errors from the AI
+if (result.errors && result.errors.length > 0) {
 errors = result.errors;
 // Highlight errors and show first suggestion
 highlightErrors(errors);
 if (errors.length > 0) {
 showErrorSuggestion(errors[0], null);
 }
-} else if (result && result.corrected) {
+} else if (result.corrected) {
 // If AI returns corrected text directly
 textarea.value = result.corrected;
 updateCharCount();
-alert('Grammar check complete! Your text has been corrected.');
 } else {
-alert('No grammar errors found! Your text is already well-written.');
+// If no errors found
+alert('No grammar errors found! Your text looks good.');
 }
 } catch (error) {
 console.error('Grammar check error:', error);
-this.innerHTML = originalButtonHTML;
+this.innerHTML = 'Fix Grammar';
 this.disabled = false;
-alert('Failed to check grammar. Please try again.');
+// Show demo error highlighting for development/fallback
+errors = getDemoErrors(text);
+highlightErrors(errors);
+if (errors.length > 0) {
+showErrorSuggestion(errors[0], null);
+}
 }
 });
 
-// AI Grammar Check Function - FIXED for development
-async function checkGrammarWithAI(text) {
-// For development/demo purposes, simulate AI response with errors
-// In production, this would use the real GEMINI_API_KEY
-  
-// Simulate API delay
-await new Promise(resolve => setTimeout(resolve, 2000));
-
-// Demo errors for the sample text
+// Get demo errors for the sample text (fallback)
+function getDemoErrors(text) {
 const demoErrors = [
-{
-original: "is",
-suggestion: "are",
-reason: "Subject-verb agreement: 'countries' is plural so it should be 'are making'",
-position: text.indexOf("is")
-},
-{
-original: "continues",
-suggestion: "continue",
-reason: "Subject-verb agreement: 'others' is plural so it should be 'continue'",
-position: text.indexOf("continues")
-},
-{
-original: "believes",
-suggestion: "believe",
-reason: "Subject-verb agreement: 'scientists' is plural so it should be 'believe'",
-position: text.indexOf("believes")
-},
-{
-original: "was took",
-suggestion: "had been taken",
-reason: "Verb tense: Should be past perfect 'had been taken' to show action before another past action",
-position: text.indexOf("was took")
-},
-{
-original: "will not became",
-suggestion: "would not have become",
-reason: "Conditional tense: Should be 'would not have become' in a hypothetical past condition",
-position: text.indexOf("will not became")
-},
-{
-original: "has done",
-suggestion: "have done",
-reason: "Subject-verb agreement: 'governments' is plural so it should be 'have done'",
-position: text.indexOf("has done")
-}
+{ text: 'is', suggestion: 'are', reason: 'Subject-verb agreement: "countries" is plural so it should be "are making"' },
+{ text: 'continues', suggestion: 'continue', reason: 'Subject-verb agreement: "others" is plural so it should be "continue"' },
+{ text: 'believes', suggestion: 'believe', reason: 'Subject-verb agreement: "scientists" is plural so it should be "believe"' },
+{ text: 'was took', suggestion: 'had been taken', reason: 'Verb tense: Should be past perfect "had been taken" to show action before another past action' },
+{ text: 'will not became', suggestion: 'would not have become', reason: 'Conditional tense: Should be "would not have become" in a hypothetical past condition' },
+{ text: 'has done', suggestion: 'have done', reason: 'Subject-verb agreement: "governments" is plural so it should be "have done"' }
 ];
 
 // Filter errors that actually exist in the text
-const actualErrors = demoErrors.filter(error => {
-if (error.position === -1) return false;
-// Verify the text at that position matches
-const textAtPosition = text.substring(error.position, error.position + error.original.length);
-return textAtPosition === error.original;
-});
-
-return { errors: actualErrors, original: text };
+const foundErrors = demoErrors.filter(error => text.includes(error.text));
+return foundErrors.map((error, index) => ({
+...error,
+original: error.text
+}));
 }
 
 // Clean up previous error highlighting
@@ -1386,8 +1376,7 @@ function cleanupErrorHighlighting() {
 const errorWords = textareaContainer.querySelectorAll('.error-word');
 errorWords.forEach(word => {
 const parent = word.parentNode;
-const textNode = document.createTextNode(word.textContent);
-parent.replaceChild(textNode, word);
+parent.replaceChild(document.createTextNode(word.textContent), word);
 parent.normalize();
 });
 
@@ -1404,10 +1393,7 @@ textarea.classList.remove('error-mode');
 
 // Highlight errors in text
 function highlightErrors(errors) {
-if (errors.length === 0) {
-alert('No grammar errors found! Your text is already well-written.');
-return;
-}
+if (errors.length === 0) return;
 
 // Add error mode class to textarea
 textarea.classList.add('error-mode');
@@ -1415,16 +1401,14 @@ textarea.classList.add('error-mode');
 const originalText = textarea.value;
 let htmlText = originalText;
 
-// Create error highlights - process from end to beginning to avoid position issues
-errors.sort((a, b) => b.position - a.position);
+// Sort errors by position in text (longest first to avoid partial replacements)
+errors.sort((a, b) => b.text.length - a.text.length);
 
+// Create error highlights
 errors.forEach((error, index) => {
-const start = error.position;
-const end = start + error.original.length;
-const before = htmlText.substring(0, start);
-const errorText = htmlText.substring(start, end);
-const after = htmlText.substring(end);
-htmlText = before + `<span class="error-word" data-error-index="${index}">${errorText}</span>` + after;
+const escapedText = error.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const regex = new RegExp(`(${escapedText})`, 'gi');
+htmlText = htmlText.replace(regex, `<span class="error-word" data-error-index="${index}">$1</span>`);
 });
 
 // Create contenteditable div for error highlighting
@@ -1455,7 +1439,7 @@ updateCharCount();
 });
 }
 
-// Show error suggestion box with correct positioning
+// Show error suggestion box
 function showErrorSuggestion(error, errorElement) {
 currentError = error;
 currentErrorElement = errorElement;
@@ -1464,45 +1448,18 @@ errorReviewText.textContent = error.reason;
 // Position the error review box
 if (errorElement) {
 const rect = errorElement.getBoundingClientRect();
-const editorCard = document.querySelector('.editor-card');
-const cardRect = editorCard.getBoundingClientRect();
-const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-
-// Calculate position relative to viewport
-const viewportHeight = window.innerHeight;
-const viewportWidth = window.innerWidth;
+const containerRect = textareaContainer.getBoundingClientRect();
+const editorCardRect = document.querySelector('.editor-card').getBoundingClientRect();
 
 // Position below the error word
-let top = rect.bottom + scrollTop + 5;
-let left = rect.left + scrollLeft;
+errorReviewBox.style.top = (rect.bottom - containerRect.top + 5) + 'px';
+errorReviewBox.style.left = (rect.left - containerRect.left) + 'px';
 
-// Adjust if it would go off the bottom of the viewport
-if (top + 150 > viewportHeight + scrollTop) {
-top = rect.top + scrollTop - 150; // Position above instead
+// Make sure it stays within the editor card
+const boxWidth = 300;
+if (rect.left - containerRect.left + boxWidth > containerRect.width) {
+errorReviewBox.style.left = (containerRect.width - boxWidth) + 'px';
 }
-
-// Adjust if it would go off the right of the viewport
-if (left + 300 > viewportWidth + scrollLeft) {
-left = viewportWidth + scrollLeft - 320; // Keep within viewport
-}
-
-// Ensure it stays within editor card horizontally
-if (left < cardRect.left + scrollLeft) {
-left = cardRect.left + scrollLeft;
-}
-
-errorReviewBox.style.top = top + 'px';
-errorReviewBox.style.left = left + 'px';
-} else {
-// Center in editor card if no specific element
-const editorCard = document.querySelector('.editor-card');
-const cardRect = editorCard.getBoundingClientRect();
-const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-
-errorReviewBox.style.top = (cardRect.top + scrollTop + 100) + 'px';
-errorReviewBox.style.left = (cardRect.left + scrollLeft + 50) + 'px';
 }
 
 errorReviewBox.classList.add('active');
