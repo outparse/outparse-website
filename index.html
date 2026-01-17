@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Outparse | Grammar Checker & Writing Assistant</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root {
@@ -35,11 +33,9 @@ box-sizing: border-box;
 }
 
 body {
-font-family: 'Inter', sans-serif;
+font-family: 'Arimo', sans-serif;
 color: var(--text-dark);
 line-height: 1.6;
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;
 }
 
 /* Header Styles */
@@ -83,7 +79,6 @@ font-size: 1.5rem;
 font-weight: 700;
 color: var(--text-dark);
 text-transform: lowercase;
-letter-spacing: -0.5px;
 }
 
 /* Desktop Navigation */
@@ -148,7 +143,6 @@ padding: 12px 16px;
 text-decoration: none;
 display: block;
 transition: background-color 0.3s;
-font-weight: 400;
 }
 
 .dropdown-content a:hover {
@@ -174,10 +168,9 @@ border-radius: 50px;
 font-weight: 600;
 cursor: pointer;
 transition: all 0.3s ease;
-font-family: 'Inter', sans-serif;
+font-family: 'Arimo', sans-serif;
 font-size: 0.95rem;
 border: none;
-letter-spacing: -0.2px;
 }
 
 .btn-login {
@@ -249,17 +242,11 @@ color: var(--text-dark);
 font-weight: 500;
 display: block;
 padding: 8px 0;
-font-family: 'Inter', sans-serif;
 }
 
 .mobile-dropdown-content {
 padding-left: 15px;
 margin-top: 10px;
-display: none;
-}
-
-.mobile-dropdown-content.active {
-display: block;
 }
 
 .mobile-dropdown-content a {
@@ -293,15 +280,12 @@ font-weight: 700;
 line-height: 1.2;
 margin-bottom: 20px;
 color: var(--text-dark);
-letter-spacing: -1px;
 }
 
 .hero-content p {
 font-size: 1.2rem;
 color: var(--text-light);
 margin-bottom: 30px;
-font-weight: 400;
-line-height: 1.7;
 }
 
 /* Editor Card */
@@ -386,7 +370,6 @@ z-index: 10;
 border: 1px solid #dee2e6;
 box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 margin-top: 5px;
-font-family: 'Inter', sans-serif;
 }
 
 .editor-action-btn:hover::after {
@@ -418,14 +401,13 @@ width: 100%;
 height: 100%;
 padding: 20px;
 border: none;
-font-family: 'Inter', sans-serif;
+font-family: 'Arimo', sans-serif;
 font-size: 1rem;
 line-height: 1.6;
 outline: none;
 background-color: var(--white);
 resize: none;
 overflow-y: auto;
-font-weight: 400;
 }
 
 .editor-textarea.error-mode {
@@ -445,7 +427,6 @@ flex-shrink: 0;
 .char-count {
 color: var(--text-light);
 font-size: 0.9rem;
-font-family: 'Inter', sans-serif;
 }
 
 .char-count span {
@@ -479,7 +460,7 @@ border-radius: 50px;
 font-weight: 600;
 cursor: pointer;
 transition: all 0.3s ease;
-font-family: 'Inter', sans-serif;
+font-family: 'Arimo', sans-serif;
 font-size: 0.95rem;
 border: 1px solid var(--border-color);
 background-color: var(--white);
@@ -505,7 +486,6 @@ cursor: pointer;
 padding: 0 2px;
 margin: 0 1px;
 display: inline;
-font-family: 'Inter', sans-serif;
 }
 
 .error-word:hover {
@@ -524,7 +504,6 @@ border: 1px solid var(--border-color);
 display: none;
 min-width: 250px;
 max-width: 300px;
-font-family: 'Inter', sans-serif;
 }
 
 .error-review-box.active {
@@ -569,7 +548,6 @@ color: var(--text-light);
 font-size: 0.9rem;
 line-height: 1.5;
 margin-bottom: 10px;
-font-weight: 400;
 }
 
 .error-review-actions {
@@ -582,7 +560,7 @@ padding: 8px 16px;
 border-radius: 50px;
 font-weight: 600;
 cursor: pointer;
-font-family: 'Inter', sans-serif;
+font-family: 'Arimo', sans-serif;
 font-size: 0.85rem;
 border: 1px solid var(--border-color);
 background-color: var(--white);
@@ -621,7 +599,6 @@ font-weight: 700;
 margin-bottom: 40px;
 text-align: center;
 color: var(--text-dark);
-letter-spacing: -0.5px;
 }
 
 .faq-item {
@@ -653,7 +630,6 @@ color: var(--primary-color);
 margin-right: 15px;
 transition: transform 0.3s;
 color: var(--text-dark);
-font-size: 0.8rem;
 }
 
 .faq-question.active .faq-icon {
@@ -683,7 +659,6 @@ max-height: 500px;
 .faq-answer p {
 color: var(--text-light);
 line-height: 1.6;
-font-weight: 400;
 }
 
 /* Footer */
@@ -712,7 +687,6 @@ color: var(--text-dark);
 display: flex;
 justify-content: space-between;
 align-items: center;
-font-weight: 600;
 }
 
 .footer-column ul {
@@ -727,7 +701,6 @@ margin-bottom: 12px;
 text-decoration: none;
 color: var(--text-light);
 transition: color 0.3s;
-font-weight: 400;
 }
 
 .footer-column ul li a:hover {
@@ -744,10 +717,9 @@ gap: 15px;
 padding: 12px 15px;
 border: 1px solid var(--border-color);
 border-radius: 50px;
-font-family: 'Inter', sans-serif;
+font-family: 'Arimo', sans-serif;
 font-size: 0.95rem;
 outline: none;
-font-weight: 400;
 }
 
 .newsletter-btn {
@@ -759,7 +731,6 @@ border: none;
 font-weight: 600;
 cursor: pointer;
 transition: background-color 0.3s;
-font-family: 'Inter', sans-serif;
 }
 
 .newsletter-btn:hover {
@@ -770,8 +741,6 @@ background-color: #248f6c;
 font-size: 0.8rem;
 color: var(--text-light);
 margin-top: 10px;
-font-weight: 400;
-line-height: 1.5;
 }
 
 .social-links {
@@ -814,7 +783,6 @@ gap: 20px;
 .copyright {
 color: var(--text-light);
 font-size: 0.9rem;
-font-weight: 400;
 }
 
 .footer-bottom-links {
@@ -990,7 +958,7 @@ Features <i class="fas fa-chevron-down"></i>
 <li><a href="#">Grammar Checker</a></li>
 <li><a href="#">Quiz</a></li>
 <li>
-<a href="#" class="mobile-dropdown-toggle" id="mobileDropdownToggle">More Tools <i class="fas fa-chevron-down"></i></a>
+<a href="#" class="mobile-dropdown-toggle">More Tools <i class="fas fa-chevron-down"></i></a>
 <div class="mobile-dropdown-content" id="mobileDropdown">
 <a href="#">Word Puzzle</a>
 <a href="#">Vocabulary Builder</a>
@@ -1297,6 +1265,8 @@ alert('Please enter some text to check grammar.');
 return;
 }
 
+console.log('Starting grammar check for text:', text.substring(0, 100) + '...');
+
 this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
 this.disabled = true;
 
@@ -1304,7 +1274,9 @@ this.disabled = true;
 cleanupErrorHighlighting();
 
 try {
-// Call Netlify Function instead of directly calling Gemini API
+console.log('Calling Netlify function...');
+
+// Call Netlify Function
 const response = await fetch('/.netlify/functions/check-grammar', {
 method: 'POST',
 headers: {
@@ -1313,60 +1285,128 @@ headers: {
 body: JSON.stringify({ text: text })
 });
 
+console.log('Response status:', response.status);
+console.log('Response headers:', response.headers);
+
 if (!response.ok) {
-throw new Error('Network response was not ok');
+const errorText = await response.text();
+console.error('Network error:', errorText);
+throw new Error(`Network response was not ok: ${response.status}`);
 }
 
 const result = await response.json();
+console.log('API Response received:', result);
 
 this.innerHTML = 'Fix Grammar';
 this.disabled = false;
 
 // Check if we got errors from the AI
+if (result.success === false) {
+console.log('Server reported failure:', result.error);
+// Even on failure, use any errors that might be returned
 if (result.errors && result.errors.length > 0) {
+errors = result.errors;
+highlightErrors(errors);
+if (errors.length > 0) {
+showErrorSuggestion(errors[0], null);
+}
+return;
+}
+}
+
+if (result.errors && Array.isArray(result.errors) && result.errors.length > 0) {
+console.log(`Found ${result.errors.length} errors:`, result.errors);
 errors = result.errors;
 // Highlight errors and show first suggestion
 highlightErrors(errors);
 if (errors.length > 0) {
 showErrorSuggestion(errors[0], null);
 }
-} else if (result.corrected) {
-// If AI returns corrected text directly
-textarea.value = result.corrected;
-updateCharCount();
+} else if (result.note) {
+console.log('Note from server:', result.note);
+// Check if we have errors despite the note
+if (result.errors && result.errors.length > 0) {
+errors = result.errors;
+highlightErrors(errors);
+if (errors.length > 0) {
+showErrorSuggestion(errors[0], null);
+}
 } else {
-// If no errors found
 alert('No grammar errors found! Your text looks good.');
+}
+} else {
+console.log('No errors found in response');
+// Try using demo errors as fallback
+const demoErrors = getDemoErrors(text);
+if (demoErrors.length > 0) {
+errors = demoErrors;
+highlightErrors(errors);
+showErrorSuggestion(errors[0], null);
+console.log('Used demo errors as fallback:', demoErrors.length);
+} else {
+alert('No grammar errors found! Your text looks good.');
+}
 }
 } catch (error) {
 console.error('Grammar check error:', error);
 this.innerHTML = 'Fix Grammar';
 this.disabled = false;
+
+// Show detailed error in console
+console.error('Full error details:', {
+message: error.message,
+stack: error.stack,
+textLength: text.length
+});
+
 // Show demo error highlighting for development/fallback
+console.log('Using fallback error detection');
 errors = getDemoErrors(text);
-highlightErrors(errors);
+console.log('Fallback errors found:', errors.length);
+
 if (errors.length > 0) {
+highlightErrors(errors);
 showErrorSuggestion(errors[0], null);
+// Show notification that we're using demo mode
+errorReviewText.textContent = errors[0].reason + ' (Demo Mode)';
+} else {
+alert('Error checking grammar. Please check console for details and try again.');
 }
 }
 });
 
 // Get demo errors for the sample text (fallback)
 function getDemoErrors(text) {
+if (!text || text.trim().length === 0) return [];
+
 const demoErrors = [
-{ text: 'is', suggestion: 'are', reason: 'Subject-verb agreement: "countries" is plural so it should be "are making"' },
-{ text: 'continues', suggestion: 'continue', reason: 'Subject-verb agreement: "others" is plural so it should be "continue"' },
-{ text: 'believes', suggestion: 'believe', reason: 'Subject-verb agreement: "scientists" is plural so it should be "believe"' },
-{ text: 'was took', suggestion: 'had been taken', reason: 'Verb tense: Should be past perfect "had been taken" to show action before another past action' },
-{ text: 'will not became', suggestion: 'would not have become', reason: 'Conditional tense: Should be "would not have become" in a hypothetical past condition' },
-{ text: 'has done', suggestion: 'have done', reason: 'Subject-verb agreement: "governments" is plural so it should be "have done"' }
+{ text: 'is', suggestion: 'are', reason: 'Subject-verb agreement: "countries" is plural so it should be "are making"', type: 'grammar' },
+{ text: 'continues', suggestion: 'continue', reason: 'Subject-verb agreement: "others" is plural so it should be "continue"', type: 'grammar' },
+{ text: 'believes', suggestion: 'believe', reason: 'Subject-verb agreement: "scientists" is plural so it should be "believe"', type: 'grammar' },
+{ text: 'was took', suggestion: 'had been taken', reason: 'Verb tense: Should be past perfect "had been taken" to show action before another past action', type: 'grammar' },
+{ text: 'will not became', suggestion: 'would not have become', reason: 'Conditional tense: Should be "would not have become" in a hypothetical past condition', type: 'grammar' },
+{ text: 'has done', suggestion: 'have done', reason: 'Subject-verb agreement: "governments" is plural so it should be "have done"', type: 'grammar' },
+{ text: 'i is', suggestion: 'I am', reason: 'Subject-verb agreement: First person singular requires "am"', type: 'grammar' },
+{ text: 'they was', suggestion: 'they were', reason: 'Subject-verb agreement: Third person plural requires "were"', type: 'grammar' },
+{ text: 'she dont', suggestion: 'she doesn\'t', reason: 'Third person singular requires "doesn\'t"', type: 'grammar' },
+{ text: 'dont', suggestion: 'don\'t', reason: 'Missing apostrophe in contraction', type: 'punctuation' },
+{ text: 'wont', suggestion: 'won\'t', reason: 'Missing apostrophe in contraction', type: 'punctuation' },
+{ text: 'cant', suggestion: 'can\'t', reason: 'Missing apostrophe in contraction', type: 'punctuation' },
+{ text: 'its', suggestion: 'it\'s', reason: 'Missing apostrophe in contraction meaning "it is"', type: 'punctuation' }
 ];
 
-// Filter errors that actually exist in the text
-const foundErrors = demoErrors.filter(error => text.includes(error.text));
+// Filter errors that actually exist in the text (case insensitive)
+const foundErrors = demoErrors.filter(error => {
+const escapedText = error.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const regex = new RegExp(escapedText, 'gi');
+return regex.test(text);
+});
+
+// Return with proper formatting
 return foundErrors.map((error, index) => ({
 ...error,
-original: error.text
+original: error.text,
+id: index
 }));
 }
 
@@ -1393,7 +1433,12 @@ textarea.classList.remove('error-mode');
 
 // Highlight errors in text
 function highlightErrors(errors) {
-if (errors.length === 0) return;
+if (errors.length === 0) {
+console.log('No errors to highlight');
+return;
+}
+
+console.log('Highlighting', errors.length, 'errors');
 
 // Add error mode class to textarea
 textarea.classList.add('error-mode');
@@ -1441,9 +1486,14 @@ updateCharCount();
 
 // Show error suggestion box
 function showErrorSuggestion(error, errorElement) {
+if (!error) {
+console.error('No error provided to showErrorSuggestion');
+return;
+}
+
 currentError = error;
 currentErrorElement = errorElement;
-errorReviewText.textContent = error.reason;
+errorReviewText.textContent = error.reason || 'Grammar improvement suggested';
 
 // Position the error review box
 if (errorElement) {
@@ -1460,6 +1510,12 @@ const boxWidth = 300;
 if (rect.left - containerRect.left + boxWidth > containerRect.width) {
 errorReviewBox.style.left = (containerRect.width - boxWidth) + 'px';
 }
+} else {
+// Center the box if no specific element
+const containerRect = textareaContainer.getBoundingClientRect();
+errorReviewBox.style.top = '50%';
+errorReviewBox.style.left = '50%';
+errorReviewBox.style.transform = 'translate(-50%, -50%)';
 }
 
 errorReviewBox.classList.add('active');
@@ -1495,7 +1551,9 @@ updateCharCount();
 
 // Remove this error from the errors array
 const errorIndex = parseInt(currentErrorElement.dataset.errorIndex);
+if (errorIndex >= 0 && errorIndex < errors.length) {
 errors.splice(errorIndex, 1);
+}
 
 // Update error indices for remaining errors
 const errorWords = textareaContainer.querySelectorAll('.error-word');
@@ -1512,6 +1570,19 @@ currentErrorElement = null;
 if (errors.length === 0) {
 cleanupErrorHighlighting();
 }
+} else if (currentError) {
+// If we have an error but no element, just update the textarea
+const contentEditableDiv = textareaContainer.querySelector('div[contenteditable="true"]');
+if (contentEditableDiv) {
+// Find and replace all instances
+const currentText = contentEditableDiv.innerText;
+const newText = currentText.replace(new RegExp(currentError.text, 'gi'), currentError.suggestion);
+contentEditableDiv.innerText = newText;
+textarea.value = newText;
+updateCharCount();
+}
+errorReviewBox.classList.remove('active');
+currentError = null;
 }
 });
 
